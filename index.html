@@ -4,164 +4,206 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>剃刀的边缘 · 奥卡姆剃刀与爱因斯坦</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23f7f3ea'/%3E%3Cpath d='M5 20 L27 20 L27 24 L5 24 Z' fill='none' stroke='%239a1f1a' stroke-width='1.6'/%3E%3Cline x1='5' y1='24' x2='27' y2='24' stroke='%239a1f1a' stroke-width='2.4'/%3E%3C/svg%3E">
 <!--
-  重构说明（2026-09-13）：
-  原始版本 2026-05-23 建于 jasoneip01-pixel/occams-razor，随账号封禁丢失。
-  本文件依据飞书对话记录中保存的规格重建：结构（7 板块 V1 → 4 板块 V2）、
-  三处剃刀隐喻交互、黑金配色、断点（≤600 竖列 / 601-768 平板横排 / 桌面三栏 / ≥1200 加宽）、
-  V6 教训（右面板点击后才出现，避免空面板失衡）、V7 教训（outcome 移出 flex 容器）。
-  三旋钮：布局实验度 5 / 动效强度 4 / 信息密度 5
+  剃刀的边缘 · 奥卡姆剃刀与爱因斯坦
+  原版 2026-05-23（jasoneip01-pixel/occams-razor，随账号封禁丢失）→ 依据飞书对话记录重建 2026-09-13
+  视觉方案 A「论文纸 1905」：暖白纸 + 墨黑衬线 + 朱红编号；剃刀 = 朱笔一划（strike-through）
+  内容与结构（4 板块 / 三场景剃刀 / 7 节点时间线 / 四大战役 / 两句原话）与原规格一致
+  三旋钮：布局实验度 4 / 动效强度 3 / 信息密度 3（比旧版收）
 -->
 <style>
   :root{
-    --bg:#0d0c0b;
-    --panel:#16140f;
-    --panel-2:#1d1a14;
-    --line:#4a4130;
-    --gold:#c9a24a;
-    --gold-dim:#a8905e;
-    --cut:#b8a68a;
-    --text:#ece6da;
-    --dim:#9a9384;
-    --wrap:900px;
+    /* 材质 */
+    --paper:#f1f1ef;
+    --paper-2:#fbfbf9;
+    --ink:#17181a;
+    --ink-2:#3c3e40;
+    --muted:#6c6e6f;
+    --rule:#dededa;
+    --rule-2:#e9e9e6;
+    --seal:#9a1f1a;
+    /* 字体 */
+    --serif:"Noto Serif CJK SC","Noto Serif SC","Source Han Serif SC","Songti SC",Georgia,serif;
+    --sans:"Noto Sans CJK SC","PingFang SC","Hiragino Sans GB",system-ui,sans-serif;
+    --wrap:1040px;
   }
   *{box-sizing:border-box}
   html{scroll-behavior:smooth}
   body{
-    margin:0;background:var(--bg);color:var(--text);
-    font-family:"Noto Sans CJK SC","PingFang SC","Hiragino Sans GB",system-ui,sans-serif;
-    font-size:16px;line-height:1.75;
-    -webkit-font-smoothing:antialiased;
+    margin:0;background:var(--paper);color:var(--ink);
+    font-family:var(--serif);font-size:17px;line-height:1.95;
+    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
   }
-  .wrap{max-width:var(--wrap);margin:0 auto;padding:0 22px}
-  @media (min-width:1200px){:root{--wrap:960px}}
+  .wrap{max-width:var(--wrap);margin:0 auto;padding:0 32px}
+  a{color:inherit}
+  ::selection{background:rgba(163,52,31,.14)}
 
-  h1,h2,.latin,.q-en{font-family:"Noto Serif SC","Songti SC",Georgia,serif}
-  h2{font-size:1.35rem;font-weight:600;letter-spacing:.02em;margin:0 0 6px}
-  .sec{padding:64px 0;border-top:1px solid var(--line)}
-  .sec-note{color:var(--dim);font-size:.9rem;margin:0 0 28px}
+  h1,h2,h3{font-family:var(--serif);font-weight:600;letter-spacing:.01em}
+  .mono{font-family:var(--sans);font-variant-numeric:tabular-nums}
+  .micro{font-family:var(--sans);font-size:11.5px;letter-spacing:.26em;text-transform:uppercase}
 
-  /* ---------- hero ---------- */
-  .hero{padding:88px 0 64px;text-align:left}
-  .kicker{color:var(--gold-dim);font-size:.82rem;letter-spacing:.28em;margin:0 0 22px}
-  .hero h1{font-size:clamp(2.4rem,7vw,4rem);line-height:1.1;margin:0 0 10px;font-weight:700}
-  .hero .sub{color:var(--dim);font-size:1.05rem;margin:0 0 34px;letter-spacing:.08em}
-  .latin{font-size:1.12rem;line-height:1.6;color:var(--gold);margin:0 0 6px}
-  .latin .zh,.q-zh{display:block;color:var(--text);font-size:.95rem;margin-top:6px;font-family:inherit}
-  .latin + .latin{margin-top:22px}
-  .explore{display:inline-block;margin-top:38px;color:var(--dim);text-decoration:none;
-    border-bottom:1px solid var(--line);padding:10px 2px;font-size:.9rem;min-height:44px}
-  .explore:hover{color:var(--gold);border-color:var(--gold-dim)}
+  /* ---------- 英雄区 ---------- */
+  .hero{padding:124px 0 104px;position:relative}
+  .hero .kicker{font-family:var(--sans);font-size:11.5px;letter-spacing:.32em;color:var(--muted);
+    margin:0 0 76px;text-transform:uppercase}
+  .hero h1{font-size:clamp(2.9rem,6.6vw,4.8rem);line-height:1.04;margin:0 0 16px;font-weight:700}
+  .hero .sub{font-size:1.16rem;color:var(--muted);letter-spacing:.22em;margin:0 0 8px}
+  .hero .hrule{height:1px;background:var(--ink);opacity:.55;margin:0 0 72px}
 
-  /* ---------- razor ---------- */
-  .tabs{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 22px}
-  .tab{background:none;border:1px solid var(--line);color:var(--dim);border-radius:2px;
-    padding:12px 16px;font-size:.92rem;cursor:pointer;min-height:44px;font-family:inherit}
-  .tab:hover{color:var(--text);border-color:var(--gold-dim)}
-  .tab[aria-selected="true"]{color:var(--bg);background:var(--gold);border-color:var(--gold);font-weight:600}
-  .scene-line{color:var(--dim);font-size:.9rem;margin:0 0 24px;min-height:1.6em}
+  .pair{display:grid;grid-template-columns:1fr 1fr;gap:76px;max-width:880px}
+  .num{font-family:Georgia,serif;font-size:12px;letter-spacing:.32em;color:var(--seal);margin:0 0 20px}
+  .la{font-family:Georgia,"Times New Roman",serif;font-style:italic;font-size:1.42rem;line-height:1.5;
+    margin:0 0 16px;color:var(--ink)}
+  .zh{font-size:1.02rem;color:var(--ink-2);line-height:1.9;margin:0}
 
-  .razor-scene{display:flex;align-items:stretch;gap:0}
-  .panel{background:var(--panel);border:1px solid var(--line);border-radius:2px;padding:22px 20px}
-  .panel-before{flex:1}
-  .panel-after{flex:.7;background:var(--panel-2);border-color:var(--gold-dim);display:none}
-  .panel-after.show{display:block;animation:slideIn .5s ease both}
-  @keyframes slideIn{from{opacity:0;transform:translateX(14px)}to{opacity:1;transform:none}}
-  .panel h3{margin:0 0 4px;font-size:.82rem;letter-spacing:.18em;color:var(--gold-dim);font-weight:600}
-  .panel .cap{color:var(--dim);font-size:.78rem;margin:0 0 14px}
-  .entity{display:flex;gap:12px;align-items:flex-start;padding:13px 0;border-top:1px solid rgba(74,65,48,.55);
-    font-size:.94rem;line-height:1.65;transition:color .3s}
-  .entity:first-of-type{border-top:none}
-  .entity .bullet{color:var(--gold-dim);flex:0 0 auto;font-size:.8rem;padding-top:4px}
-  .entity.cut{animation:cutFade .55s ease forwards}
-  .entity.cut .bullet{color:var(--cut)}
-  @keyframes cutFade{
-    0%{opacity:1;transform:none;color:var(--text);text-decoration:none}
-    45%{opacity:1;transform:translateX(-6px);color:var(--text)}
-    100%{opacity:.78;transform:translateX(-30px);color:var(--cut);text-decoration:line-through}
-  }
-  .entity.keep{animation:keepIn .5s ease both}
-  @keyframes keepIn{from{opacity:0}to{opacity:1}}
+  .cta{display:inline-block;margin-top:76px;font-family:var(--sans);font-size:12.5px;letter-spacing:.26em;
+    color:var(--ink);text-decoration:none;border-bottom:1px solid var(--ink);padding-bottom:7px}
+  .cta:hover{color:var(--seal);border-color:var(--seal)}
 
-  .blade{flex:0 0 120px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;
-    position:relative}
-  .blade::before{content:"";position:absolute;top:6%;bottom:6%;width:1px;background:var(--gold-dim);
-    opacity:.5;box-shadow:0 0 12px 1px rgba(201,162,74,.28)}
-  .blade button{position:relative;z-index:1;background:rgba(201,162,74,.07);border:1px solid var(--gold);
-    color:var(--gold);border-radius:2px;padding:17px 14px;font-size:1rem;cursor:pointer;
-    font-family:inherit;min-height:56px;min-width:98px;letter-spacing:.04em;line-height:1.3}
-  .blade button:hover{background:var(--gold);color:var(--bg)}
-  .blade .hint{position:relative;z-index:1;color:var(--dim);font-size:.74rem;text-align:center;
-    background:var(--bg);padding:0 6px}
+  .blade-mark{position:absolute;right:32px;top:322px;width:290px;height:230px;pointer-events:none}
 
-  #outcome-area{margin-top:20px;min-height:0}
-  .outcome{border-left:2px solid var(--gold);padding:12px 0 12px 16px;font-size:.95rem;color:var(--text);
-    animation:keepIn .6s ease both}
-  .outcome .badge{display:inline-block;font-size:.74rem;letter-spacing:.14em;color:var(--bg);
-    background:var(--gold);padding:2px 8px;margin-bottom:8px;border-radius:2px}
-  .outcome.stop{border-color:var(--gold-dim)}
-  .outcome.stop .badge{background:var(--gold-dim);color:var(--bg)}
+  /* ---------- 区块骨架 ---------- */
+  .sec{padding:104px 0;border-top:1px solid var(--rule)}
+  .sec-kicker{font-family:var(--sans);font-size:11px;letter-spacing:.3em;color:var(--ink-2);
+    text-transform:uppercase;margin:0 0 26px}
+  h2{font-size:clamp(1.65rem,3vw,2.1rem);line-height:1.3;margin:0 0 14px}
+  .sec-note{color:var(--ink-2);font-size:1.02rem;margin:0 0 60px;max-width:62ch}
 
-  /* ---------- timeline ---------- */
-  .tl{list-style:none;padding:0;margin:0;border-left:1px solid var(--line)}
-  .tl li{position:relative;padding:0 0 0 22px}
+  /* ---------- 剃刀 ---------- */
+  .tabs{display:flex;flex-wrap:wrap;gap:0 40px;border-bottom:1px solid var(--rule);margin:0 0 40px}
+  .tab{background:none;border:none;border-bottom:2px solid transparent;font-family:var(--sans);
+    font-size:13.5px;letter-spacing:.08em;color:var(--muted);padding:15px 0;cursor:pointer;
+    min-height:48px;margin-bottom:-1px}
+  .tab:hover{color:var(--ink)}
+  .tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--seal)}
+  .scene-line{font-size:1.04rem;color:var(--ink-2);margin:0 0 48px;max-width:60ch}
+
+  .razor-scene{display:grid;grid-template-columns:1fr 140px .8fr;align-items:start}
+  .panel-before{padding-right:42px}
+  .blade{display:flex;flex-direction:column;align-items:center;gap:16px;position:relative;padding-top:8px}
+  .blade::before{content:"";position:absolute;top:0;bottom:0;left:50%;width:1px;background:var(--rule)}
+  .blade .hint{position:relative;font-family:var(--sans);font-size:10.5px;letter-spacing:.22em;
+    color:var(--muted);background:var(--paper);padding:6px 8px;text-align:center}
+  #razor-btn{position:relative;background:var(--paper-2);border:1px solid var(--seal);color:var(--seal);
+    font-family:var(--sans);font-size:13px;letter-spacing:.2em;padding:16px 12px;min-width:104px;
+    min-height:56px;cursor:pointer;transition:background .25s,color .25s}
+  #razor-btn:hover{background:var(--seal);color:var(--paper-2)}
+  #razor-btn:focus-visible{outline:2px solid var(--seal);outline-offset:3px}
+
+  .phead{font-family:var(--sans);font-size:11px;letter-spacing:.26em;color:var(--ink-2);
+    text-transform:uppercase;margin:0 0 6px}
+  .cap{color:var(--muted);font-size:.9rem;margin:0 0 18px;font-family:var(--sans)}
+
+  .entity{display:flex;gap:16px;padding:15px 0;border-top:1px solid var(--rule-2);
+    font-size:1.02rem;line-height:1.7}
+  .entity:first-child{border-top:none}
+  .entity .bullet{font-family:var(--sans);font-size:10.5px;letter-spacing:.08em;color:var(--muted);
+    flex:0 0 22px;padding-top:7px}
+  .entity .txt{position:relative;transition:color .45s}
+  .entity.cut .txt{color:var(--muted)}
+  .entity.cut .txt::after{content:"";position:absolute;left:0;right:0;top:53%;height:1px;
+    background:var(--seal);transform-origin:left center;transform:scaleX(0);animation:strike .42s ease forwards}
+  .entity.cut .bullet{color:var(--seal);opacity:.55}
+  @keyframes strike{to{transform:scaleX(1)}}
+  .entity.keep .txt{color:var(--ink)}
+  .entity.keep .bullet{color:var(--seal)}
+  .entity.keep .bullet::after{content:"●";margin-left:-2px}
+
+  .panel-after{padding-left:42px;border-left:1px solid var(--rule);opacity:0;visibility:hidden;
+    transform:translateX(8px);transition:opacity .5s ease,transform .5s ease,visibility .5s}
+  .panel-after.show{opacity:1;visibility:visible;transform:none}
+
+  #outcome-area{margin-top:52px}
+  .outcome{border-top:1px solid var(--ink);padding-top:26px;font-size:1.04rem;max-width:72ch;
+    animation:rise .5s ease both}
+  .outcome .badge{display:block;font-family:var(--sans);font-size:10.5px;letter-spacing:.26em;
+    color:var(--seal);text-transform:uppercase;margin-bottom:14px}
+  .outcome.stop .badge{color:var(--ink-2)}
+  @keyframes rise{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  /* ---------- 时间线 ---------- */
+  .tl{list-style:none;padding:0;margin:0;border-left:1px solid var(--rule)}
+  .tl li{position:relative;padding-left:38px}
   .tl .node{width:100%;text-align:left;background:none;border:none;color:inherit;font-family:inherit;
-    cursor:pointer;padding:14px 0;min-height:44px;display:flex;gap:14px;align-items:baseline;font-size:1rem}
-  .tl .node::before{content:"";position:absolute;left:-5px;top:24px;width:9px;height:9px;background:var(--bg);
-    border:1px solid var(--gold-dim);border-radius:50%}
-  .tl li.open .node::before{background:var(--gold);border-color:var(--gold)}
-  .tl .yr{color:var(--gold);flex:0 0 auto;font-variant-numeric:tabular-nums;font-size:.92rem;
-    font-family:"Noto Serif SC",serif}
-  .tl .ttl{flex:1}
-  .tl .body{display:none;color:var(--dim);font-size:.92rem;padding:0 0 18px;max-width:62ch}
-  .tl li.open .body{display:block;animation:keepIn .35s ease both}
+    cursor:pointer;padding:17px 0;min-height:52px;display:flex;gap:22px;align-items:baseline}
+  .tl .node::before{content:"";position:absolute;left:-4.5px;top:30px;width:8px;height:8px;
+    background:var(--paper);border:1px solid var(--muted);border-radius:50%}
+  .tl li.open .node::before{background:var(--seal);border-color:var(--seal)}
+  .tl .yr{flex:0 0 96px;font-family:var(--sans);font-size:12.5px;letter-spacing:.12em;color:var(--ink-2);
+    padding-top:5px}
+  .tl li.open .yr{color:var(--seal)}
+  .tl .ttl{flex:1;font-size:1.16rem;font-weight:600;line-height:1.5}
+  .tl .body{display:none;color:var(--ink-2);font-size:1.02rem;max-width:64ch;
+    padding:0 0 26px;margin:0 0 12px;border-bottom:1px solid var(--rule-2)}
+  .tl li.open .body{display:block;animation:rise .35s ease both}
 
-  /* ---------- battles ---------- */
-  .cards{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-  .card{background:var(--panel);border:1px solid var(--line);border-radius:2px;padding:20px 18px;
-    cursor:pointer;min-height:44px;transition:border-color .25s}
-  .card:hover{border-color:var(--gold-dim)}
-  .card .cn{font-size:1rem;font-weight:600;margin:0 0 6px}
-  .card .ct{color:var(--dim);font-size:.86rem;margin:0}
-  .card .verdict{display:none;margin:14px 0 0;padding-top:12px;border-top:1px solid var(--line);
-    font-size:.9rem;color:var(--text)}
-  .card.open .verdict{display:block;animation:keepIn .35s ease both}
-  .tag{display:inline-block;font-size:.72rem;letter-spacing:.12em;padding:2px 7px;border-radius:2px;
-    border:1px solid var(--gold-dim);color:var(--gold);margin-left:8px;vertical-align:middle}
-  .tag.edge{border-color:var(--gold-dim);color:var(--gold-dim)}
-  .tag.bite{border-color:var(--cut);color:var(--cut)}
+  /* ---------- 四大战役 ---------- */
+  .cards{display:grid;grid-template-columns:1fr 1fr;column-gap:80px}
+  .card{border-top:1px solid var(--rule);padding:36px 0;cursor:pointer}
+  .card .cn{font-size:1.28rem;font-weight:600;margin:0 0 12px;display:flex;align-items:baseline;
+    gap:14px;flex-wrap:wrap}
+  .tag{font-family:var(--sans);font-size:10.5px;letter-spacing:.2em;color:var(--seal);
+    border:1px solid var(--seal);padding:3px 8px;white-space:nowrap}
+  .tag.edge{color:var(--ink-2);border-color:var(--ink-2)}
+  .tag.bite{color:var(--ink-2);border-color:var(--ink-2)}
+  .card .ct{color:var(--ink-2);font-size:1.02rem;margin:0}
+  .verdict{display:none;margin-top:20px;padding-top:18px;border-top:1px solid var(--rule-2);
+    font-size:1.02rem;color:var(--ink)}
+  .card.open .verdict{display:block;animation:rise .35s ease both}
+  .card:hover .cn{color:var(--seal)}
 
-  /* ---------- quotes ---------- */
-  blockquote{margin:0;padding:0 0 0 18px;border-left:2px solid var(--gold)}
-  blockquote + blockquote{margin-top:34px}
-  .q-en{font-size:1.02rem;line-height:1.65;color:var(--gold);margin:0}
-  .q-zh{color:var(--text);font-size:.92rem}
-  .q-src{display:block;color:var(--dim);font-size:.82rem;margin-top:12px;letter-spacing:.08em}
+  /* ---------- 原话 ---------- */
+  blockquote{margin:0;padding:40px 0 44px;border-top:1px solid var(--rule)}
+  blockquote + blockquote{border-top:1px solid var(--rule-2)}
+  .q-en{font-family:Georgia,"Times New Roman",serif;font-style:italic;
+    font-size:clamp(1.28rem,2.5vw,1.7rem);line-height:1.55;margin:0 0 18px;max-width:62ch}
+  .q-zh{font-size:1.04rem;color:var(--ink-2);margin:0;max-width:60ch}
+  .q-src{display:block;font-family:var(--sans);font-size:11px;letter-spacing:.24em;color:var(--muted);
+    margin-top:20px;text-transform:uppercase}
 
-  footer{color:var(--dim);font-size:.82rem;padding:40px 0 64px;border-top:1px solid var(--line)}
+  footer{padding:56px 0 104px;border-top:1px solid var(--rule);font-family:var(--sans);font-size:12px;
+    letter-spacing:.14em;color:var(--muted)}
+  footer a{text-decoration:none;border-bottom:1px solid var(--rule)}
 
-  /* ---------- responsive ---------- */
+  /* ---------- 断点 ---------- */
   @media (min-width:1200px){
-    .panel-after{flex:.68}
-    .blade{flex:0 0 132px}
-    .hero{padding:110px 0 76px}
+    :root{--wrap:1100px}
+    .hero{padding:150px 0 120px}
+    .blade-mark{right:64px;width:330px;top:340px}
   }
-  @media (max-width:768px){
-    .panel-after{flex:.7}
-    .blade{flex:0 0 108px}
-    .panel{padding:15px 13px}
-    .entity{font-size:.88rem}
+  @media (max-width:900px){
+    .razor-scene{grid-template-columns:1fr 120px .8fr}
+    .panel-before{padding-right:28px}
+    .panel-after{padding-left:28px}
+    .cards{column-gap:48px}
+    .blade-mark{display:none}
+  }
+  @media (max-width:700px){
+    body{font-size:16.5px;line-height:1.9}
+    .wrap{padding:0 22px}
+    .hero{padding:80px 0 64px}
+    .hero .kicker{margin-bottom:48px}
+    .hero .hrule{margin-bottom:52px}
+    .pair{grid-template-columns:1fr;gap:44px}
+    .cta{margin-top:52px}
+    .sec{padding:68px 0}
+    .sec-note{margin-bottom:40px}
+    .razor-scene{grid-template-columns:1fr;gap:0}
+    .panel-before{padding-right:0}
+    .blade{flex-direction:row;justify-content:flex-start;gap:18px;padding:26px 0;
+      border-top:1px solid var(--rule-2);border-bottom:1px solid var(--rule-2)}
+    .blade::before{display:none}
+    .blade .hint{background:transparent;padding:0}
+    .panel-after{padding:30px 0 0;border-left:none;border-top:1px solid var(--rule-2);margin-top:30px}
+    #outcome-area{margin-top:38px}
+    .tl li{padding-left:26px}
+    .tl .node{flex-direction:column;gap:4px;padding:18px 0}
+    .tl .yr{flex:none;padding-top:0}
     .cards{grid-template-columns:1fr}
-  }
-  @media (max-width:600px){
-    .razor-scene{flex-direction:column;gap:14px}
-    .blade{flex:1 1 auto;width:100%;flex-direction:row;padding:6px 0}
-    .blade::before{top:auto;bottom:auto;left:6%;right:6%;width:auto;height:1px}
-    .blade .hint{display:none}
-    .panel-after{flex:1 1 auto}
-    .sec{padding:48px 0}
-    .hero{padding:64px 0 48px}
-    .tl .node{flex-direction:column;gap:2px}
+    .card{padding:30px 0}
+    blockquote{padding:32px 0 36px}
+    footer{padding:44px 0 76px}
   }
   @media (prefers-reduced-motion:reduce){
     *{animation-duration:.01ms !important;transition-duration:.01ms !important}
@@ -172,84 +214,116 @@
 <body>
 
 <header class="hero wrap">
-  <p class="kicker">1287 · 奥卡姆的威廉 → 1905 · 爱因斯坦</p>
+  <p class="kicker">Annalen der Physik · 1905 · 剃刀思想史</p>
   <h1>剃刀的边缘</h1>
   <p class="sub">奥卡姆剃刀与爱因斯坦</p>
+  <div class="hrule"></div>
 
-  <p class="latin">Numquam ponenda est pluralitas sine necessitate.
-    <span class="zh">如无必要，勿增实体。</span></p>
-  <p class="latin">Frustra fit per plura quod potest fieri per pauciora.
-    <span class="zh">能用更少的东西做到的，用更多就是浪费。</span></p>
+  <div class="pair">
+    <div>
+      <p class="num">I</p>
+      <p class="la">Numquam ponenda est pluralitas sine necessitate.</p>
+      <p class="zh">如无必要，勿增实体。 — 奥卡姆的威廉，1287</p>
+    </div>
+    <div>
+      <p class="num">II</p>
+      <p class="la">Frustra fit per plura quod potest fieri per pauciora.</p>
+      <p class="zh">能用更少的东西做到的，用更多就是浪费。 — 牛顿《推理法则》</p>
+    </div>
+  </div>
 
-  <a class="explore" href="#razor">向下探索</a>
+  <a class="cta" href="#razor">向下探索</a>
+
+  <svg class="blade-mark" viewBox="0 0 330 230" fill="none" aria-hidden="true">
+    <line x1="8" y1="118" x2="322" y2="118" stroke="#b6b6b0" stroke-width=".7" stroke-dasharray="2 6"/>
+    <rect x="96" y="72" width="176" height="46" fill="none" stroke="#9a1f1a" stroke-width="1.5"/>
+    <line x1="96" y1="118" x2="272" y2="118" stroke="#9a1f1a" stroke-width="2.6"/>
+    <circle cx="80" cy="95" r="15" fill="none" stroke="#1b1713" stroke-width="1"/>
+    <circle cx="80" cy="95" r="5" fill="none" stroke="#1b1713" stroke-width="1"/>
+    <path d="M272 118 l14 -11 v22 z" fill="none" stroke="#1b1713" stroke-width="1"/>
+    <text x="96" y="164" font-family="Georgia,serif" font-style="italic" font-size="14" fill="#6c6e6f">pluralitas sine necessitate</text>
+    <text x="8" y="206" font-family="Georgia,serif" font-size="11" letter-spacing="3" fill="#6c6e6f">1287 — 1955</text>
+  </svg>
 </header>
 
-<section class="sec wrap" id="razor">
-  <h2>玩一次剃刀</h2>
-  <p class="sec-note">三次战役，三组假设。选一个场景，按下剃刀，看什么被砍掉、什么留了下来。</p>
+<section class="sec" id="razor">
+  <div class="wrap">
+    <p class="sec-kicker">I · 交互</p>
+    <h2>玩一次剃刀</h2>
+    <p class="sec-note">三次战役，三组假设。选一个场景，按下剃刀，看什么被砍掉、什么留了下来。</p>
 
-  <div class="tabs" role="tablist">
-    <button class="tab" role="tab" aria-selected="true" data-scene="sr">狭义相对论 · 1905</button>
-    <button class="tab" role="tab" aria-selected="false" data-scene="gr">广义相对论 · 1915</button>
-    <button class="tab" role="tab" aria-selected="false" data-scene="qm">量子力学 · 1925</button>
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" aria-selected="true" data-scene="sr">狭义相对论 · 1905</button>
+      <button class="tab" role="tab" aria-selected="false" data-scene="gr">广义相对论 · 1915</button>
+      <button class="tab" role="tab" aria-selected="false" data-scene="qm">量子力学 · 1925</button>
+    </div>
+    <p class="scene-line" id="scene-line"></p>
+
+    <div class="razor-scene">
+      <div class="panel-before">
+        <p class="phead">剃刀之前</p>
+        <p class="cap" id="cap-before"></p>
+        <div id="before-list"></div>
+      </div>
+
+      <div class="blade">
+        <span class="hint" id="hint-top">按下去</span>
+        <button id="razor-btn" type="button">剃一刀</button>
+        <span class="hint" id="blade-hint">6 条假设</span>
+      </div>
+
+      <div class="panel-after" id="panel-after" aria-hidden="true">
+        <p class="phead">剃刀之后</p>
+        <p class="cap" id="cap-after"></p>
+        <div id="after-list"></div>
+      </div>
+    </div>
+
+    <div id="outcome-area" aria-live="polite"></div>
   </div>
-  <p class="scene-line" id="scene-line"></p>
+</section>
 
-  <div class="razor-scene">
-    <div class="panel panel-before">
-      <h3>剃刀之前</h3>
-      <p class="cap" id="cap-before"></p>
-      <div id="before-list"></div>
-    </div>
-
-    <div class="blade">
-      <span class="hint">按下去</span>
-      <button id="razor-btn" type="button">🪒 剃一刀</button>
-      <span class="hint" id="blade-hint">6 条假设</span>
-    </div>
-
-    <div class="panel panel-after" id="panel-after" aria-hidden="true">
-      <h3>剃刀之后</h3>
-      <p class="cap" id="cap-after"></p>
-      <div id="after-list"></div>
-    </div>
+<section class="sec" id="timeline">
+  <div class="wrap">
+    <p class="sec-kicker">II · 思想史</p>
+    <h2>六个半世纪的一条线</h2>
+    <p class="sec-note">点开任意节点，就是剃一刀：把那段历史切开看里面剩了什么。</p>
+    <ul class="tl" id="tl"></ul>
   </div>
-
-  <div id="outcome-area" aria-live="polite"></div>
 </section>
 
-<section class="sec wrap" id="timeline">
-  <h2>六个半世纪的一条线</h2>
-  <p class="sec-note">点开任意节点，就是剃一刀：把那段历史切开看里面剩了什么。</p>
-  <ul class="tl" id="tl"></ul>
+<section class="sec" id="battles">
+  <div class="wrap">
+    <p class="sec-kicker">III · 判决</p>
+    <h2>四大战役</h2>
+    <p class="sec-note">剃刀三次得手，一次停住。点开卡片看判决。</p>
+    <div class="cards" id="cards"></div>
+  </div>
 </section>
 
-<section class="sec wrap" id="battles">
-  <h2>四大战役</h2>
-  <p class="sec-note">剃刀三次得手，一次停住。点开卡片看判决。</p>
-  <div class="cards" id="cards"></div>
+<section class="sec" id="quotes">
+  <div class="wrap">
+    <p class="sec-kicker">IV · 原话</p>
+    <h2>两句原话</h2>
+    <p class="sec-note">剃刀的全部要点，都在里面。</p>
+
+    <blockquote>
+      <p class="q-en">Numquam ponenda est pluralitas sine necessitate.</p>
+      <p class="q-zh">如无必要，勿增实体。</p>
+      <span class="q-src">奥卡姆的威廉 · 1287 至 1347</span>
+    </blockquote>
+
+    <blockquote>
+      <p class="q-en">The supreme goal of all theory is to make the irreducible basic elements as simple and
+        as few as possible without having to surrender the adequate representation of a single datum of experience.</p>
+      <p class="q-zh">理论的最高目标，是让不可再约的基本元素尽可能简单和少，但不放弃对任何一个经验数据的充分描述。</p>
+      <span class="q-src">爱因斯坦</span>
+    </blockquote>
+  </div>
 </section>
 
-<section class="sec wrap" id="quotes">
-  <h2>两句原话</h2>
-  <p class="sec-note">剃刀的全部要点，都在里面。</p>
-
-  <blockquote>
-    <p class="q-en">Numquam ponenda est pluralitas sine necessitate.</p>
-    <span class="q-zh">如无必要，勿增实体。</span>
-    <span class="q-src">奥卡姆的威廉（1287 至 1347）</span>
-  </blockquote>
-
-  <blockquote>
-    <p class="q-en">The supreme goal of all theory is to make the irreducible basic elements as simple and
-      as few as possible without having to surrender the adequate representation of a single datum of experience.</p>
-    <span class="q-zh">理论的最高目标，是让不可再约的基本元素尽可能简单和少，但不放弃对任何一个经验数据的充分描述。</span>
-    <span class="q-src">爱因斯坦</span>
-  </blockquote>
-</section>
-
-<footer class="wrap">
-  剃刀的边缘 · 原版 2026-05-23，重建于 2026-09-13。单文件，无外部依赖。
+<footer>
+  <div class="wrap">剃刀的边缘 · 原版 2026-05-23，重建于 2026-09-13 · 单文件，无外部依赖</div>
 </footer>
 
 <script>
@@ -259,99 +333,56 @@
   var SCENES = {
     sr: {
       line: "1905 年：光的传播不需要介质。可是为了保住「以太」，物理学准备了四个互不解释的补丁。",
-      before: [
-        "以太（既要是刚体，又要是流体）",
-        "绝对空间",
-        "绝对时间",
-        "绝对同时性",
-        "洛伦兹收缩补丁",
-        "时间膨胀补丁"
-      ],
-      after: [
-        "光速不变（实验事实）",
-        "相对性原理（惯性系等价）"
-      ],
-      outcome: {
-        stop: false,
-        text: "砍掉 4 个互不解释的补丁，剩下 2 条公理。时间膨胀、长度收缩、质能等价，全部由这 2 条推出来。同一批现象，假设从 6 降到 2。"
-      }
+      before: ["以太（既要是刚体，又要是流体）","绝对空间","绝对时间","绝对同时性","洛伦兹收缩补丁","时间膨胀补丁"],
+      after: ["光速不变（实验事实）","相对性原理（惯性系等价）"],
+      outcome: { stop:false, text:"砍掉 4 个互不解释的补丁，剩下 2 条公理。时间膨胀、长度收缩、质能等价，全部由这 2 条推出来。同一批现象，假设从 6 降到 2。" }
     },
     gr: {
       line: "1915 年：引力是隔空作用，水星近日点进动还解释不通，于是又添了几条假设。",
-      before: [
-        "引力（作为一种力）",
-        "超距作用",
-        "绝对时空背景",
-        "火神星（Vulcan）",
-        "水星进动的额外修正",
-        "惯性系的特殊地位"
-      ],
-      after: [
-        "等效原理",
-        "场方程（引力即时空弯曲）"
-      ],
-      outcome: {
-        stop: false,
-        text: "引力不再是独立实体，它是几何。一个场方程同时给出水星进动、光线偏折、引力红移。剃掉的不是细节，是「引力」这个概念本身。"
-      }
+      before: ["引力（作为一种力）","超距作用","绝对时空背景","火神星（Vulcan）","水星进动的额外修正","惯性系的特殊地位"],
+      after: ["等效原理","场方程（引力即时空弯曲）"],
+      outcome: { stop:false, text:"引力不再是独立实体，它是几何。一个场方程同时给出水星进动、光线偏折、引力红移。剃掉的不是细节，是「引力」这个概念本身。" }
     },
     qm: {
       line: "1925 年之后：波函数坍缩、观测者的角色、根本性随机。爱因斯坦认为这里一定藏着一个更简单的版本。",
-      before: [
-        "波函数坍缩",
-        "观测者的特殊角色",
-        "根本性随机",
-        "隐变量（爱因斯坦的期望）",
-        "局域性",
-        "经典决定论"
-      ],
-      after: [
-        "量子力学本身（剃不动）"
-      ],
-      outcome: {
-        stop: true,
-        text: "贝尔不等式（1964）给出了答案：任何隐变量理论都必须是非局域的，比量子力学本身更奇怪。要「更简单」的那个版本，需要更离谱的假设。剃刀在这里停住，这就是「不过于简单」的那条线。"
-      }
+      before: ["波函数坍缩","观测者的特殊角色","根本性随机","隐变量（爱因斯坦的期望）","局域性","经典决定论"],
+      after: ["量子力学本身（剃不动）"],
+      outcome: { stop:true, text:"贝尔不等式（1964）给出了答案：任何隐变量理论都必须是非局域的，比量子力学本身更奇怪。要「更简单」的那个版本，需要更离谱的假设。剃刀在这里停住，这就是「不过于简单」的那条线。" }
     }
   };
 
   var TIMELINE = [
-    ["1287", "奥卡姆的威廉", "写下「如无必要，勿增实体」。他没有说最简单的解释总是对的，他说的是：解释力相同时，假设少的优先。"],
-    ["1687", "牛顿", "《自然哲学的数学原理》第三条推理规则：只接受那些既为真、又足以解释现象的因。"],
-    ["1905", "狭义相对论", "剃掉以太、绝对空间、绝对时间：2 条公理推出全部，还预言了此前没人见过的现象。"],
-    ["1915", "广义相对论", "剃掉「引力」这个实体：引力不是力，是时空的几何。1919 年日食观测让它成为头条。"],
-    ["1925 至 1935", "量子力学的张力", "爱因斯坦不接受「上帝掷骰子」，想把随机剃成决定论。自然没有配合。"],
-    ["1955", "统一场论未竟", "生命最后 30 年想用一个方程统一引力与电磁力。不是简单错了，是数据不够时提前剃了。"],
-    ["今天", "不止于物理学", "任何方案、系统、架构都在问同一个问题：这条假设删掉，还成立吗？"]
+    ["1287","奥卡姆的威廉","写下「如无必要，勿增实体」。他没有说最简单的解释总是对的，他说的是：解释力相同时，假设少的优先。"],
+    ["1687","牛顿","《自然哲学的数学原理》第三条推理规则：只接受那些既为真、又足以解释现象的因。"],
+    ["1905","狭义相对论","剃掉以太、绝对空间、绝对时间：2 条公理推出全部，还预言了此前没人见过的现象。"],
+    ["1915","广义相对论","剃掉「引力」这个实体：引力不是力，是时空的几何。1919 年日食观测让它成为头条。"],
+    ["1925 至 1935","量子力学的张力","爱因斯坦不接受「上帝掷骰子」，想把随机剃成决定论。自然没有配合。"],
+    ["1955","统一场论未竟","生命最后 30 年想用一个方程统一引力与电磁力。不是简单错了，是数据不够时提前剃了。"],
+    ["今天","不止于物理学","任何方案、系统、架构都在问同一个问题：这条假设删掉，还成立吗？"]
   ];
 
   var BATTLES = [
-    { t: "狭义相对论", v: "胜", k: "win",
-      s: "6 条假设压到 2 条公理，且预言被后来的实验全部验证。",
-      d: "剃刀最干净的一次得手：不是把复杂解释简化，而是换了一个假设更少的框架，额外解释了所有旧现象。" },
-    { t: "广义相对论", v: "胜", k: "win",
-      s: "把「引力」本身从实体名单上划掉。",
-      d: "砍掉一个看起来不可或缺的实体，换回一个更少的假设集，还顺手解释了牛顿理论解释不了的进动。" },
-    { t: "统一场论", v: "触边", k: "edge",
-      s: "三十年未竟。砍的不是多余的，是当时还不存在的。",
-      d: "强相互作用、弱相互作用尚未被发现，真正需要统一的力不止两个。数据不够时提前剃，剃掉的是还不知道的东西。" },
-    { t: "量子力学", v: "反噬", k: "bite",
-      s: "想要更简单的版本，得到的却是更奇怪的假设。",
-      d: "贝尔不等式证明：隐变量若存在，必须是非局域的。爱因斯坦期望的「更简单」，代价是比量子力学本身更违背直觉。" }
+    { t:"狭义相对论", v:"胜", k:"win",
+      s:"6 条假设压到 2 条公理，且预言被后来的实验全部验证。",
+      d:"剃刀最干净的一次得手：不是把复杂解释简化，而是换了一个假设更少的框架，额外解释了所有旧现象。" },
+    { t:"广义相对论", v:"胜", k:"win",
+      s:"把「引力」本身从实体名单上划掉。",
+      d:"砍掉一个看起来不可或缺的实体，换回一个更少的假设集，还顺手解释了牛顿理论解释不了的进动。" },
+    { t:"统一场论", v:"触边", k:"edge",
+      s:"三十年未竟。砍的不是多余的，是当时还不存在的。",
+      d:"强相互作用、弱相互作用尚未被发现，真正需要统一的力不止两个。数据不够时提前剃，剃掉的是还不知道的东西。" },
+    { t:"量子力学", v:"反噬", k:"bite",
+      s:"想要更简单的版本，得到的却是更奇怪的假设。",
+      d:"贝尔不等式证明：隐变量若存在，必须是非局域的。爱因斯坦期望的「更简单」，代价是比量子力学本身更违背直觉。" }
   ];
 
-  var scene = "sr";
-  var cut = false;
+  var scene = "sr", cut = false;
+  var $ = function(id){ return document.getElementById(id); };
+  var beforeList = $("before-list"), afterList = $("after-list"), panelAfter = $("panel-after"),
+      outcomeArea = $("outcome-area"), razorBtn = $("razor-btn"), bladeHint = $("blade-hint"),
+      sceneLine = $("scene-line"), capBefore = $("cap-before"), capAfter = $("cap-after");
 
-  var beforeList = document.getElementById("before-list");
-  var afterList = document.getElementById("after-list");
-  var panelAfter = document.getElementById("panel-after");
-  var outcomeArea = document.getElementById("outcome-area");
-  var razorBtn = document.getElementById("razor-btn");
-  var bladeHint = document.getElementById("blade-hint");
-  var sceneLine = document.getElementById("scene-line");
-  var capBefore = document.getElementById("cap-before");
-  var capAfter = document.getElementById("cap-after");
+  function two(n){ return (n < 10 ? "0" : "") + n; }
 
   function render(keepCut){
     var s = SCENES[scene];
@@ -359,30 +390,30 @@
     capBefore.textContent = s.before.length + " 条独立假设";
     capAfter.textContent = s.after.length + " 条留下";
     beforeList.innerHTML = "";
-    s.before.forEach(function(txt){
+    s.before.forEach(function(txt, i){
       var d = document.createElement("div");
       d.className = "entity" + (keepCut ? " cut" : "");
-      d.innerHTML = '<span class="bullet">◆</span><span>' + txt + "</span>";
+      d.innerHTML = '<span class="bullet">' + two(i + 1) + '</span><span class="txt">' + txt + "</span>";
       beforeList.appendChild(d);
     });
     afterList.innerHTML = "";
-    s.after.forEach(function(txt){
+    s.after.forEach(function(txt, i){
       var d = document.createElement("div");
       d.className = "entity keep";
-      d.innerHTML = '<span class="bullet">◇</span><span>' + txt + "</span>";
+      d.innerHTML = '<span class="bullet">' + two(i + 1) + '</span><span class="txt">' + txt + "</span>";
       afterList.appendChild(d);
     });
     if(keepCut){
       panelAfter.classList.add("show");
-      panelAfter.setAttribute("aria-hidden", "false");
-      razorBtn.textContent = "↺ 复原";
+      panelAfter.setAttribute("aria-hidden","false");
+      razorBtn.textContent = "复原";
       bladeHint.textContent = "剃掉 " + (s.before.length - s.after.length) + " 条";
       showOutcome(s.outcome);
       cut = true;
     }else{
       panelAfter.classList.remove("show");
-      panelAfter.setAttribute("aria-hidden", "true");
-      razorBtn.textContent = "🪒 剃一刀";
+      panelAfter.setAttribute("aria-hidden","true");
+      razorBtn.textContent = "剃一刀";
       bladeHint.textContent = s.before.length + " 条假设";
       outcomeArea.innerHTML = "";
       cut = false;
@@ -402,21 +433,21 @@
     var s = SCENES[scene];
     var ents = beforeList.querySelectorAll(".entity");
     Array.prototype.forEach.call(ents, function(el, i){
-      setTimeout(function(){ el.classList.add("cut"); }, i * 90);
+      setTimeout(function(){ el.classList.add("cut"); }, i * 110);
     });
     setTimeout(function(){
       panelAfter.classList.add("show");
-      panelAfter.setAttribute("aria-hidden", "false");
-      razorBtn.textContent = "↺ 复原";
+      panelAfter.setAttribute("aria-hidden","false");
+      razorBtn.textContent = "复原";
       bladeHint.textContent = "剃掉 " + (s.before.length - s.after.length) + " 条";
       showOutcome(s.outcome);
       cut = true;
-    }, ents.length * 90 + 180);
+    }, ents.length * 110 + 220);
   });
 
   Array.prototype.forEach.call(document.querySelectorAll(".tab"), function(tab){
     tab.addEventListener("click", function(){
-      if(tab.dataset.scene === scene && !cut) return;
+      if(tab.dataset.scene === scene && !cut){ return; }
       Array.prototype.forEach.call(document.querySelectorAll(".tab"), function(t){
         t.setAttribute("aria-selected", t === tab ? "true" : "false");
       });
@@ -425,7 +456,7 @@
     });
   });
 
-  var tl = document.getElementById("tl");
+  var tl = $("tl");
   TIMELINE.forEach(function(row){
     var li = document.createElement("li");
     li.innerHTML = '<button class="node" type="button"><span class="yr">' + row[0] +
@@ -433,17 +464,17 @@
     li.querySelector(".node").addEventListener("click", function(){
       var open = li.classList.contains("open");
       Array.prototype.forEach.call(tl.querySelectorAll("li"), function(x){ x.classList.remove("open"); });
-      if(!open) li.classList.add("open");
+      if(!open){ li.classList.add("open"); }
     });
     tl.appendChild(li);
   });
 
-  var cards = document.getElementById("cards");
+  var cards = $("cards");
   BATTLES.forEach(function(b){
     var d = document.createElement("div");
     d.className = "card";
-    d.setAttribute("role", "button");
-    d.setAttribute("tabindex", "0");
+    d.setAttribute("role","button");
+    d.setAttribute("tabindex","0");
     d.innerHTML = '<p class="cn">' + b.t + '<span class="tag ' + b.k + '">' + b.v + "</span></p>" +
       '<p class="ct">' + b.s + '</p><div class="verdict">' + b.d + "</div>";
     function toggle(){ d.classList.toggle("open"); }
