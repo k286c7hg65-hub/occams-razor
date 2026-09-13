@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>剃刀的边缘 · 奥卡姆剃刀与爱因斯坦</title>
+<!--
+  重构说明（2026-09-13）：
+  原始版本 2026-05-23 建于 jasoneip01-pixel/occams-razor，随账号封禁丢失。
+  本文件依据飞书对话记录中保存的规格重建：结构（7 板块 V1 → 4 板块 V2）、
+  三处剃刀隐喻交互、黑金配色、断点（≤600 竖列 / 601-768 平板横排 / 桌面三栏 / ≥1200 加宽）、
+  V6 教训（右面板点击后才出现，避免空面板失衡）、V7 教训（outcome 移出 flex 容器）。
+  三旋钮：布局实验度 5 / 动效强度 4 / 信息密度 5
+-->
+<style>
+  :root{
+    --bg:#0d0c0b;
+    --panel:#16140f;
+    --panel-2:#1d1a14;
+    --line:#4a4130;
+    --gold:#c9a24a;
+    --gold-dim:#a8905e;
+    --cut:#b8a68a;
+    --text:#ece6da;
+    --dim:#9a9384;
+    --wrap:900px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;background:var(--bg);color:var(--text);
+    font-family:"Noto Sans CJK SC","PingFang SC","Hiragino Sans GB",system-ui,sans-serif;
+    font-size:16px;line-height:1.75;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:var(--wrap);margin:0 auto;padding:0 22px}
+  @media (min-width:1200px){:root{--wrap:960px}}
+
+  h1,h2,.latin,.q-en{font-family:"Noto Serif SC","Songti SC",Georgia,serif}
+  h2{font-size:1.35rem;font-weight:600;letter-spacing:.02em;margin:0 0 6px}
+  .sec{padding:64px 0;border-top:1px solid var(--line)}
+  .sec-note{color:var(--dim);font-size:.9rem;margin:0 0 28px}
+
+  /* ---------- hero ---------- */
+  .hero{padding:88px 0 64px;text-align:left}
+  .kicker{color:var(--gold-dim);font-size:.82rem;letter-spacing:.28em;margin:0 0 22px}
+  .hero h1{font-size:clamp(2.4rem,7vw,4rem);line-height:1.1;margin:0 0 10px;font-weight:700}
+  .hero .sub{color:var(--dim);font-size:1.05rem;margin:0 0 34px;letter-spacing:.08em}
+  .latin{font-size:1.12rem;line-height:1.6;color:var(--gold);margin:0 0 6px}
+  .latin .zh,.q-zh{display:block;color:var(--text);font-size:.95rem;margin-top:6px;font-family:inherit}
+  .latin + .latin{margin-top:22px}
+  .explore{display:inline-block;margin-top:38px;color:var(--dim);text-decoration:none;
+    border-bottom:1px solid var(--line);padding:10px 2px;font-size:.9rem;min-height:44px}
+  .explore:hover{color:var(--gold);border-color:var(--gold-dim)}
+
+  /* ---------- razor ---------- */
+  .tabs{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 22px}
+  .tab{background:none;border:1px solid var(--line);color:var(--dim);border-radius:2px;
+    padding:12px 16px;font-size:.92rem;cursor:pointer;min-height:44px;font-family:inherit}
+  .tab:hover{color:var(--text);border-color:var(--gold-dim)}
+  .tab[aria-selected="true"]{color:var(--bg);background:var(--gold);border-color:var(--gold);font-weight:600}
+  .scene-line{color:var(--dim);font-size:.9rem;margin:0 0 24px;min-height:1.6em}
+
+  .razor-scene{display:flex;align-items:stretch;gap:0}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:2px;padding:22px 20px}
+  .panel-before{flex:1}
+  .panel-after{flex:.7;background:var(--panel-2);border-color:var(--gold-dim);display:none}
+  .panel-after.show{display:block;animation:slideIn .5s ease both}
+  @keyframes slideIn{from{opacity:0;transform:translateX(14px)}to{opacity:1;transform:none}}
+  .panel h3{margin:0 0 4px;font-size:.82rem;letter-spacing:.18em;color:var(--gold-dim);font-weight:600}
+  .panel .cap{color:var(--dim);font-size:.78rem;margin:0 0 14px}
+  .entity{display:flex;gap:12px;align-items:flex-start;padding:13px 0;border-top:1px solid rgba(74,65,48,.55);
+    font-size:.94rem;line-height:1.65;transition:color .3s}
+  .entity:first-of-type{border-top:none}
+  .entity .bullet{color:var(--gold-dim);flex:0 0 auto;font-size:.8rem;padding-top:4px}
+  .entity.cut{animation:cutFade .55s ease forwards}
+  .entity.cut .bullet{color:var(--cut)}
+  @keyframes cutFade{
+    0%{opacity:1;transform:none;color:var(--text);text-decoration:none}
+    45%{opacity:1;transform:translateX(-6px);color:var(--text)}
+    100%{opacity:.78;transform:translateX(-30px);color:var(--cut);text-decoration:line-through}
+  }
+  .entity.keep{animation:keepIn .5s ease both}
+  @keyframes keepIn{from{opacity:0}to{opacity:1}}
+
+  .blade{flex:0 0 120px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;
+    position:relative}
+  .blade::before{content:"";position:absolute;top:6%;bottom:6%;width:1px;background:var(--gold-dim);
+    opacity:.5;box-shadow:0 0 12px 1px rgba(201,162,74,.28)}
+  .blade button{position:relative;z-index:1;background:rgba(201,162,74,.07);border:1px solid var(--gold);
+    color:var(--gold);border-radius:2px;padding:17px 14px;font-size:1rem;cursor:pointer;
+    font-family:inherit;min-height:56px;min-width:98px;letter-spacing:.04em;line-height:1.3}
+  .blade button:hover{background:var(--gold);color:var(--bg)}
+  .blade .hint{position:relative;z-index:1;color:var(--dim);font-size:.74rem;text-align:center;
+    background:var(--bg);padding:0 6px}
+
+  #outcome-area{margin-top:20px;min-height:0}
+  .outcome{border-left:2px solid var(--gold);padding:12px 0 12px 16px;font-size:.95rem;color:var(--text);
+    animation:keepIn .6s ease both}
+  .outcome .badge{display:inline-block;font-size:.74rem;letter-spacing:.14em;color:var(--bg);
+    background:var(--gold);padding:2px 8px;margin-bottom:8px;border-radius:2px}
+  .outcome.stop{border-color:var(--gold-dim)}
+  .outcome.stop .badge{background:var(--gold-dim);color:var(--bg)}
+
+  /* ---------- timeline ---------- */
+  .tl{list-style:none;padding:0;margin:0;border-left:1px solid var(--line)}
+  .tl li{position:relative;padding:0 0 0 22px}
+  .tl .node{width:100%;text-align:left;background:none;border:none;color:inherit;font-family:inherit;
+    cursor:pointer;padding:14px 0;min-height:44px;display:flex;gap:14px;align-items:baseline;font-size:1rem}
+  .tl .node::before{content:"";position:absolute;left:-5px;top:24px;width:9px;height:9px;background:var(--bg);
+    border:1px solid var(--gold-dim);border-radius:50%}
+  .tl li.open .node::before{background:var(--gold);border-color:var(--gold)}
+  .tl .yr{color:var(--gold);flex:0 0 auto;font-variant-numeric:tabular-nums;font-size:.92rem;
+    font-family:"Noto Serif SC",serif}
+  .tl .ttl{flex:1}
+  .tl .body{display:none;color:var(--dim);font-size:.92rem;padding:0 0 18px;max-width:62ch}
+  .tl li.open .body{display:block;animation:keepIn .35s ease both}
+
+  /* ---------- battles ---------- */
+  .cards{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:2px;padding:20px 18px;
+    cursor:pointer;min-height:44px;transition:border-color .25s}
+  .card:hover{border-color:var(--gold-dim)}
+  .card .cn{font-size:1rem;font-weight:600;margin:0 0 6px}
+  .card .ct{color:var(--dim);font-size:.86rem;margin:0}
+  .card .verdict{display:none;margin:14px 0 0;padding-top:12px;border-top:1px solid var(--line);
+    font-size:.9rem;color:var(--text)}
+  .card.open .verdict{display:block;animation:keepIn .35s ease both}
+  .tag{display:inline-block;font-size:.72rem;letter-spacing:.12em;padding:2px 7px;border-radius:2px;
+    border:1px solid var(--gold-dim);color:var(--gold);margin-left:8px;vertical-align:middle}
+  .tag.edge{border-color:var(--gold-dim);color:var(--gold-dim)}
+  .tag.bite{border-color:var(--cut);color:var(--cut)}
+
+  /* ---------- quotes ---------- */
+  blockquote{margin:0;padding:0 0 0 18px;border-left:2px solid var(--gold)}
+  blockquote + blockquote{margin-top:34px}
+  .q-en{font-size:1.02rem;line-height:1.65;color:var(--gold);margin:0}
+  .q-zh{color:var(--text);font-size:.92rem}
+  .q-src{display:block;color:var(--dim);font-size:.82rem;margin-top:12px;letter-spacing:.08em}
+
+  footer{color:var(--dim);font-size:.82rem;padding:40px 0 64px;border-top:1px solid var(--line)}
+
+  /* ---------- responsive ---------- */
+  @media (min-width:1200px){
+    .panel-after{flex:.68}
+    .blade{flex:0 0 132px}
+    .hero{padding:110px 0 76px}
+  }
+  @media (max-width:768px){
+    .panel-after{flex:.7}
+    .blade{flex:0 0 108px}
+    .panel{padding:15px 13px}
+    .entity{font-size:.88rem}
+    .cards{grid-template-columns:1fr}
+  }
+  @media (max-width:600px){
+    .razor-scene{flex-direction:column;gap:14px}
+    .blade{flex:1 1 auto;width:100%;flex-direction:row;padding:6px 0}
+    .blade::before{top:auto;bottom:auto;left:6%;right:6%;width:auto;height:1px}
+    .blade .hint{display:none}
+    .panel-after{flex:1 1 auto}
+    .sec{padding:48px 0}
+    .hero{padding:64px 0 48px}
+    .tl .node{flex-direction:column;gap:2px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation-duration:.01ms !important;transition-duration:.01ms !important}
+    html{scroll-behavior:auto}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero wrap">
+  <p class="kicker">1287 · 奥卡姆的威廉 → 1905 · 爱因斯坦</p>
+  <h1>剃刀的边缘</h1>
+  <p class="sub">奥卡姆剃刀与爱因斯坦</p>
+
+  <p class="latin">Numquam ponenda est pluralitas sine necessitate.
+    <span class="zh">如无必要，勿增实体。</span></p>
+  <p class="latin">Frustra fit per plura quod potest fieri per pauciora.
+    <span class="zh">能用更少的东西做到的，用更多就是浪费。</span></p>
+
+  <a class="explore" href="#razor">向下探索</a>
+</header>
+
+<section class="sec wrap" id="razor">
+  <h2>玩一次剃刀</h2>
+  <p class="sec-note">三次战役，三组假设。选一个场景，按下剃刀，看什么被砍掉、什么留了下来。</p>
+
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" aria-selected="true" data-scene="sr">狭义相对论 · 1905</button>
+    <button class="tab" role="tab" aria-selected="false" data-scene="gr">广义相对论 · 1915</button>
+    <button class="tab" role="tab" aria-selected="false" data-scene="qm">量子力学 · 1925</button>
+  </div>
+  <p class="scene-line" id="scene-line"></p>
+
+  <div class="razor-scene">
+    <div class="panel panel-before">
+      <h3>剃刀之前</h3>
+      <p class="cap" id="cap-before"></p>
+      <div id="before-list"></div>
+    </div>
+
+    <div class="blade">
+      <span class="hint">按下去</span>
+      <button id="razor-btn" type="button">🪒 剃一刀</button>
+      <span class="hint" id="blade-hint">6 条假设</span>
+    </div>
+
+    <div class="panel panel-after" id="panel-after" aria-hidden="true">
+      <h3>剃刀之后</h3>
+      <p class="cap" id="cap-after"></p>
+      <div id="after-list"></div>
+    </div>
+  </div>
+
+  <div id="outcome-area" aria-live="polite"></div>
+</section>
+
+<section class="sec wrap" id="timeline">
+  <h2>六个半世纪的一条线</h2>
+  <p class="sec-note">点开任意节点，就是剃一刀：把那段历史切开看里面剩了什么。</p>
+  <ul class="tl" id="tl"></ul>
+</section>
+
+<section class="sec wrap" id="battles">
+  <h2>四大战役</h2>
+  <p class="sec-note">剃刀三次得手，一次停住。点开卡片看判决。</p>
+  <div class="cards" id="cards"></div>
+</section>
+
+<section class="sec wrap" id="quotes">
+  <h2>两句原话</h2>
+  <p class="sec-note">剃刀的全部要点，都在里面。</p>
+
+  <blockquote>
+    <p class="q-en">Numquam ponenda est pluralitas sine necessitate.</p>
+    <span class="q-zh">如无必要，勿增实体。</span>
+    <span class="q-src">奥卡姆的威廉（1287 至 1347）</span>
+  </blockquote>
+
+  <blockquote>
+    <p class="q-en">The supreme goal of all theory is to make the irreducible basic elements as simple and
+      as few as possible without having to surrender the adequate representation of a single datum of experience.</p>
+    <span class="q-zh">理论的最高目标，是让不可再约的基本元素尽可能简单和少，但不放弃对任何一个经验数据的充分描述。</span>
+    <span class="q-src">爱因斯坦</span>
+  </blockquote>
+</section>
+
+<footer class="wrap">
+  剃刀的边缘 · 原版 2026-05-23，重建于 2026-09-13。单文件，无外部依赖。
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  var SCENES = {
+    sr: {
+      line: "1905 年：光的传播不需要介质。可是为了保住「以太」，物理学准备了四个互不解释的补丁。",
+      before: [
+        "以太（既要是刚体，又要是流体）",
+        "绝对空间",
+        "绝对时间",
+        "绝对同时性",
+        "洛伦兹收缩补丁",
+        "时间膨胀补丁"
+      ],
+      after: [
+        "光速不变（实验事实）",
+        "相对性原理（惯性系等价）"
+      ],
+      outcome: {
+        stop: false,
+        text: "砍掉 4 个互不解释的补丁，剩下 2 条公理。时间膨胀、长度收缩、质能等价，全部由这 2 条推出来。同一批现象，假设从 6 降到 2。"
+      }
+    },
+    gr: {
+      line: "1915 年：引力是隔空作用，水星近日点进动还解释不通，于是又添了几条假设。",
+      before: [
+        "引力（作为一种力）",
+        "超距作用",
+        "绝对时空背景",
+        "火神星（Vulcan）",
+        "水星进动的额外修正",
+        "惯性系的特殊地位"
+      ],
+      after: [
+        "等效原理",
+        "场方程（引力即时空弯曲）"
+      ],
+      outcome: {
+        stop: false,
+        text: "引力不再是独立实体，它是几何。一个场方程同时给出水星进动、光线偏折、引力红移。剃掉的不是细节，是「引力」这个概念本身。"
+      }
+    },
+    qm: {
+      line: "1925 年之后：波函数坍缩、观测者的角色、根本性随机。爱因斯坦认为这里一定藏着一个更简单的版本。",
+      before: [
+        "波函数坍缩",
+        "观测者的特殊角色",
+        "根本性随机",
+        "隐变量（爱因斯坦的期望）",
+        "局域性",
+        "经典决定论"
+      ],
+      after: [
+        "量子力学本身（剃不动）"
+      ],
+      outcome: {
+        stop: true,
+        text: "贝尔不等式（1964）给出了答案：任何隐变量理论都必须是非局域的，比量子力学本身更奇怪。要「更简单」的那个版本，需要更离谱的假设。剃刀在这里停住，这就是「不过于简单」的那条线。"
+      }
+    }
+  };
+
+  var TIMELINE = [
+    ["1287", "奥卡姆的威廉", "写下「如无必要，勿增实体」。他没有说最简单的解释总是对的，他说的是：解释力相同时，假设少的优先。"],
+    ["1687", "牛顿", "《自然哲学的数学原理》第三条推理规则：只接受那些既为真、又足以解释现象的因。"],
+    ["1905", "狭义相对论", "剃掉以太、绝对空间、绝对时间：2 条公理推出全部，还预言了此前没人见过的现象。"],
+    ["1915", "广义相对论", "剃掉「引力」这个实体：引力不是力，是时空的几何。1919 年日食观测让它成为头条。"],
+    ["1925 至 1935", "量子力学的张力", "爱因斯坦不接受「上帝掷骰子」，想把随机剃成决定论。自然没有配合。"],
+    ["1955", "统一场论未竟", "生命最后 30 年想用一个方程统一引力与电磁力。不是简单错了，是数据不够时提前剃了。"],
+    ["今天", "不止于物理学", "任何方案、系统、架构都在问同一个问题：这条假设删掉，还成立吗？"]
+  ];
+
+  var BATTLES = [
+    { t: "狭义相对论", v: "胜", k: "win",
+      s: "6 条假设压到 2 条公理，且预言被后来的实验全部验证。",
+      d: "剃刀最干净的一次得手：不是把复杂解释简化，而是换了一个假设更少的框架，额外解释了所有旧现象。" },
+    { t: "广义相对论", v: "胜", k: "win",
+      s: "把「引力」本身从实体名单上划掉。",
+      d: "砍掉一个看起来不可或缺的实体，换回一个更少的假设集，还顺手解释了牛顿理论解释不了的进动。" },
+    { t: "统一场论", v: "触边", k: "edge",
+      s: "三十年未竟。砍的不是多余的，是当时还不存在的。",
+      d: "强相互作用、弱相互作用尚未被发现，真正需要统一的力不止两个。数据不够时提前剃，剃掉的是还不知道的东西。" },
+    { t: "量子力学", v: "反噬", k: "bite",
+      s: "想要更简单的版本，得到的却是更奇怪的假设。",
+      d: "贝尔不等式证明：隐变量若存在，必须是非局域的。爱因斯坦期望的「更简单」，代价是比量子力学本身更违背直觉。" }
+  ];
+
+  var scene = "sr";
+  var cut = false;
+
+  var beforeList = document.getElementById("before-list");
+  var afterList = document.getElementById("after-list");
+  var panelAfter = document.getElementById("panel-after");
+  var outcomeArea = document.getElementById("outcome-area");
+  var razorBtn = document.getElementById("razor-btn");
+  var bladeHint = document.getElementById("blade-hint");
+  var sceneLine = document.getElementById("scene-line");
+  var capBefore = document.getElementById("cap-before");
+  var capAfter = document.getElementById("cap-after");
+
+  function render(keepCut){
+    var s = SCENES[scene];
+    sceneLine.textContent = s.line;
+    capBefore.textContent = s.before.length + " 条独立假设";
+    capAfter.textContent = s.after.length + " 条留下";
+    beforeList.innerHTML = "";
+    s.before.forEach(function(txt){
+      var d = document.createElement("div");
+      d.className = "entity" + (keepCut ? " cut" : "");
+      d.innerHTML = '<span class="bullet">◆</span><span>' + txt + "</span>";
+      beforeList.appendChild(d);
+    });
+    afterList.innerHTML = "";
+    s.after.forEach(function(txt){
+      var d = document.createElement("div");
+      d.className = "entity keep";
+      d.innerHTML = '<span class="bullet">◇</span><span>' + txt + "</span>";
+      afterList.appendChild(d);
+    });
+    if(keepCut){
+      panelAfter.classList.add("show");
+      panelAfter.setAttribute("aria-hidden", "false");
+      razorBtn.textContent = "↺ 复原";
+      bladeHint.textContent = "剃掉 " + (s.before.length - s.after.length) + " 条";
+      showOutcome(s.outcome);
+      cut = true;
+    }else{
+      panelAfter.classList.remove("show");
+      panelAfter.setAttribute("aria-hidden", "true");
+      razorBtn.textContent = "🪒 剃一刀";
+      bladeHint.textContent = s.before.length + " 条假设";
+      outcomeArea.innerHTML = "";
+      cut = false;
+    }
+  }
+
+  function showOutcome(o){
+    var div = document.createElement("div");
+    div.className = "outcome" + (o.stop ? " stop" : "");
+    div.innerHTML = '<span class="badge">' + (o.stop ? "剃刀停住" : "剃刀得手") + '</span><div>' + o.text + "</div>";
+    outcomeArea.innerHTML = "";
+    outcomeArea.appendChild(div);
+  }
+
+  razorBtn.addEventListener("click", function(){
+    if(cut){ render(false); return; }
+    var s = SCENES[scene];
+    var ents = beforeList.querySelectorAll(".entity");
+    Array.prototype.forEach.call(ents, function(el, i){
+      setTimeout(function(){ el.classList.add("cut"); }, i * 90);
+    });
+    setTimeout(function(){
+      panelAfter.classList.add("show");
+      panelAfter.setAttribute("aria-hidden", "false");
+      razorBtn.textContent = "↺ 复原";
+      bladeHint.textContent = "剃掉 " + (s.before.length - s.after.length) + " 条";
+      showOutcome(s.outcome);
+      cut = true;
+    }, ents.length * 90 + 180);
+  });
+
+  Array.prototype.forEach.call(document.querySelectorAll(".tab"), function(tab){
+    tab.addEventListener("click", function(){
+      if(tab.dataset.scene === scene && !cut) return;
+      Array.prototype.forEach.call(document.querySelectorAll(".tab"), function(t){
+        t.setAttribute("aria-selected", t === tab ? "true" : "false");
+      });
+      scene = tab.dataset.scene;
+      render(false);
+    });
+  });
+
+  var tl = document.getElementById("tl");
+  TIMELINE.forEach(function(row){
+    var li = document.createElement("li");
+    li.innerHTML = '<button class="node" type="button"><span class="yr">' + row[0] +
+      '</span><span class="ttl">' + row[1] + '</span></button><div class="body">' + row[2] + "</div>";
+    li.querySelector(".node").addEventListener("click", function(){
+      var open = li.classList.contains("open");
+      Array.prototype.forEach.call(tl.querySelectorAll("li"), function(x){ x.classList.remove("open"); });
+      if(!open) li.classList.add("open");
+    });
+    tl.appendChild(li);
+  });
+
+  var cards = document.getElementById("cards");
+  BATTLES.forEach(function(b){
+    var d = document.createElement("div");
+    d.className = "card";
+    d.setAttribute("role", "button");
+    d.setAttribute("tabindex", "0");
+    d.innerHTML = '<p class="cn">' + b.t + '<span class="tag ' + b.k + '">' + b.v + "</span></p>" +
+      '<p class="ct">' + b.s + '</p><div class="verdict">' + b.d + "</div>";
+    function toggle(){ d.classList.toggle("open"); }
+    d.addEventListener("click", toggle);
+    d.addEventListener("keydown", function(e){
+      if(e.key === "Enter" || e.key === " "){ e.preventDefault(); toggle(); }
+    });
+    cards.appendChild(d);
+  });
+
+  render(false);
+})();
+</script>
+</body>
+</html>
