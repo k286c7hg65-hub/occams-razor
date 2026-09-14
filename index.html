@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>剃刀的边缘 · 奥卡姆剃刀与爱因斯坦</title>
+<title>剃刀的边缘 · 奥卡姆剃刀，与它被误挂的三百年</title>
 <meta name="description" content="奥卡姆剃刀与爱因斯坦：1287 到 1955 的一条思想线，三场战役的判决，两个人的原话。">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23f1f1ef'/%3E%3Cpath d='M5 20 L27 20 L27 24 L5 24 Z' fill='none' stroke='%239a1f1a' stroke-width='1.6'/%3E%3Cline x1='5' y1='24' x2='27' y2='24' stroke='%239a1f1a' stroke-width='2.4'/%3E%3C/svg%3E">
 <!--
@@ -15,15 +15,16 @@
 -->
 <style>
   :root{
-    --paper:#f1f1ef;
-    --paper-2:#fbfbf9;
-    --ink:#17181a;
-    --ink-2:#3c3e40;
-    --muted:#6c6e6f;
-    --rule:#dededa;
-    --rule-2:#e9e9e6;
-    --seal:#9a1f1a;
+    --paper:#141110;
+    --paper-2:#1c1816;
+    --ink:#ece5da;
+    --ink-2:#cdc3b6;
+    --muted:#a1968a;
+    --rule:#3b332e;
+    --rule-2:#2a2422;
+    --seal:#e0503c;
     --serif:"Noto Serif CJK SC","Noto Serif SC","Source Han Serif SC","Songti SC",Georgia,serif;
+  --acc:#e0503c; --acc2:#e8b45a; --accInk:#141110;
     --sans:"Noto Sans CJK SC","PingFang SC","Hiragino Sans GB",system-ui,sans-serif;
     --rail:200px;
   }
@@ -35,14 +36,14 @@
     -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
   }
   a{color:inherit}
-  ::selection{background:rgba(154,31,26,.14)}
+  ::selection{background:rgba(224,80,60,.24)}
   h1,h2,h3{font-family:var(--serif);font-weight:600;letter-spacing:.01em}
   svg{color:var(--ink)}
   section[id],header[id]{scroll-margin-top:78px}
 
   /* ---------- 顶部导航 ---------- */
   .nav{position:fixed;top:0;left:0;right:0;z-index:40;height:56px;
-    background:rgba(241,241,239,.95);border-bottom:1px solid var(--rule);
+    background:rgba(20,17,16,.93);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--rule);
     transform:translateY(-101%);transition:transform .32s ease}
   .nav.show{transform:none}
   .nav-in{max-width:1120px;margin:0 auto;padding:0 32px;height:56px;display:flex;align-items:center;
@@ -262,8 +263,151 @@
     html{scroll-behavior:auto}
   }
 </style>
+
+<style id="v2-add">
+/* ===== 档2 增量样式 ===== */
+html{scroll-behavior:smooth}
+body{font-size:16px;line-height:1.85}
+h1,h2,h3{letter-spacing:.01em}
+h2{font-size:clamp(23px,3.4vw,34px);line-height:1.28}
+.sec-kicker{font-size:13px;letter-spacing:.16em}
+.sec-note{font-size:15.5px;line-height:1.9;max-width:64ch}
+.sec p{font-size:16px;line-height:1.95}
+h3.sub-h{font-size:clamp(18px,2.4vw,22px);margin:26px 0 12px;color:#f3ece1}
+
+/* 英雄区 */
+.hero h1{background:linear-gradient(100deg,#f8f2e7 0%,#edc47c 46%,#e86a52 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  font-size:clamp(34px,7vw,68px);line-height:1.06}
+.hero .sub{font-size:clamp(14px,1.7vw,17px);color:#cdc3b6}
+.hero .kicker{font-size:13px;letter-spacing:.14em}
+.hero-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(146px,1fr));gap:11px;margin:22px 0 6px}
+.hs{padding:13px 14px;border:1px solid rgba(224,80,60,.26);border-radius:12px;background:
+  linear-gradient(180deg,rgba(224,80,60,.09),rgba(224,80,60,.02));box-shadow:0 10px 30px -14px rgba(0,0,0,.75)}
+.hs b{display:block;font-family:var(--serif);font-size:clamp(21px,2.6vw,27px);color:#e8b45a;line-height:1.15}
+.hs span{display:block;font-size:12.5px;color:#a1968a;margin-top:5px;line-height:1.55}
+.turn{margin:20px 0 6px;padding:18px 20px;border-radius:14px;border:1px solid rgba(224,80,60,.32);
+  background:linear-gradient(180deg,rgba(224,80,60,.10),rgba(224,80,60,.025));
+  box-shadow:0 16px 44px -22px rgba(224,80,60,.5)}
+.turn-l{font-size:16.5px;line-height:2;color:#f1e9dd}
+.turn-k{display:inline-block;font-size:12px;letter-spacing:.14em;color:#141110;background:#e8b45a;
+  border-radius:999px;padding:3px 10px;margin-right:9px;vertical-align:2px;font-weight:700}
+
+/* 归属：迷你时间线 */
+.mini-tl{margin:18px 0;border:1px solid var(--rule);border-radius:12px;overflow:hidden;
+  box-shadow:0 14px 40px -24px rgba(0,0,0,.8);background:rgba(255,255,255,.014)}
+.mtl-row{display:grid;grid-template-columns:130px 1fr 116px;gap:12px;align-items:center;
+  padding:13px 16px;border-bottom:1px solid var(--rule-2)}
+.mtl-row:last-child{border-bottom:none}
+.mtl-y{font-family:var(--serif);font-size:15px;color:#e8b45a;letter-spacing:.02em}
+.mtl-t{font-size:15px;line-height:1.7;color:#ece5da}
+.mtl-g{font-size:12.5px;text-align:center;border-radius:999px;padding:4px 8px;border:1px solid transparent}
+.mtl-g.ok{color:#9fd6a0;border-color:rgba(159,214,160,.4);background:rgba(159,214,160,.10)}
+.mtl-g.no{color:#f0836f;border-color:rgba(240,131,111,.45);background:rgba(240,131,111,.10)}
+.mtl-g.mid{color:#e8b45a;border-color:rgba(232,180,90,.42);background:rgba(232,180,90,.10)}
+@media (max-width:700px){.mtl-row{grid-template-columns:1fr;gap:6px;padding:12px 14px}.mtl-g{justify-self:start}}
+
+/* 拉丁引文块 */
+.lat-block{margin:20px 0;padding:18px 20px;border-radius:12px;border:1px dashed rgba(232,180,90,.34);
+  background:rgba(232,180,90,.045)}
+.lat-h{font-size:14px;letter-spacing:.08em;color:#e8b45a;margin-bottom:12px}
+.lat-item{margin-bottom:14px;padding-left:14px;border-left:2px solid rgba(224,80,60,.5)}
+.lat-x{font-family:var(--serif);font-size:clamp(15px,1.9vw,19px);line-height:1.6;color:#f6efe3;font-style:italic}
+.lat-z{font-size:14.5px;color:#cdc3b6;margin-top:5px;line-height:1.8}
+.lat-s{display:inline-block;margin-left:9px;font-size:12.5px;color:#a1968a}
+.lat-n{margin-top:12px;padding-top:12px;border-top:1px solid var(--rule-2);font-size:14.5px;line-height:1.9;color:#cdc3b6}
+
+/* 反鸡汤块 */
+.irony{margin:20px 0;padding:18px 20px;border-radius:14px;border:1px solid rgba(232,180,90,.3);
+  background:linear-gradient(180deg,rgba(232,180,90,.08),rgba(232,180,90,.02))}
+.irony-h{font-size:13px;letter-spacing:.14em;color:#e8b45a;margin-bottom:9px}
+.irony p:last-child{font-size:16px;line-height:1.95;color:#ece5da}
+
+/* 三层 */
+.layers{display:grid;grid-template-columns:repeat(auto-fit,minmax(255px,1fr));gap:12px;margin-top:6px}
+.layer{padding:16px 17px;border-radius:13px;border:1px solid var(--rule);background:rgba(255,255,255,.016);
+  box-shadow:0 16px 44px -26px rgba(0,0,0,.85)}
+.layer.warn{border-color:rgba(224,80,60,.34);background:linear-gradient(180deg,rgba(224,80,60,.08),rgba(224,80,60,.015))}
+.ly-n{font-size:12px;letter-spacing:.16em;color:#a1968a}
+.ly-t{font-family:var(--serif);font-size:19px;color:#f3ece1;margin:5px 0 8px}
+.ly-d{font-size:14.5px;line-height:1.9;color:#cdc3b6}
+
+/* 反方卡 */
+.ctrs{display:grid;grid-template-columns:repeat(auto-fit,minmax(292px,1fr));gap:13px;margin-top:8px}
+.ctr{padding:17px 18px;border-radius:13px;border:1px solid var(--rule);background:rgba(255,255,255,.016);
+  box-shadow:0 18px 48px -28px rgba(0,0,0,.9);position:relative;overflow:hidden}
+.ctr:before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,#e0503c,#e8b45a)}
+.ctr-n{font-size:12px;letter-spacing:.16em;color:#e0503c;padding-left:10px}
+.ctr-h{font-size:17px;color:#f3ece1;margin:7px 0 8px;padding-left:10px;line-height:1.5}
+.ctr-d{font-size:14.5px;line-height:1.9;color:#cdc3b6;padding-left:10px}
+
+/* 判决卡扩展 */
+.card{border-radius:12px}
+.tl-l{font-family:var(--serif)}
+
+/* 来源表 */
+.srcs{display:grid;gap:9px;margin-top:8px}
+.src{display:grid;grid-template-columns:38px 1fr;gap:10px;align-items:start;padding:12px 14px;border-radius:11px;
+  border:1px solid var(--rule);background:rgba(255,255,255,.014)}
+.sg{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:8px;
+  font-size:13px;font-weight:700}
+.sg.g{background:rgba(159,214,160,.16);color:#a8e0a8;border:1px solid rgba(159,214,160,.45)}
+.sg.y{background:rgba(232,180,90,.14);color:#e8b45a;border:1px solid rgba(232,180,90,.42)}
+.st{font-size:14.5px;color:#ece5da;line-height:1.7}
+.su{grid-column:2;font-size:13px;color:#a1968a;line-height:1.7}
+.src-note{margin-top:14px;padding-top:12px;border-top:1px solid var(--rule-2);font-size:14px;line-height:1.9;color:#a1968a}
+
+/* 小屏导航：7 个栏目在 390px 下默认出现横向滚动，收紧间距与字号让它一屏放下 */
+@media (max-width:560px){.nav-links{gap:15px}.nav-links a{font-size:12.5px;letter-spacing:.03em}.brand{font-size:14px}}
+
+/* 进度条 + 滚动揭示 */
+#prog{position:fixed;top:0;left:0;height:2px;width:0;z-index:90;
+  background:linear-gradient(90deg,#e0503c,#e8b45a);box-shadow:0 0 12px rgba(224,80,60,.6)}
+.rv{opacity:0;transform:translateY(16px);transition:opacity .62s cubic-bezier(.22,.61,.36,1),transform .62s cubic-bezier(.22,.61,.36,1)}
+.rv-in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}}
+</style>
+
+<style id="v2-cardfix">
+/* 判决卡 / 时间线 / 判决标签在深底上的层次与对比（复用原类名，不改结构） */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(282px,1fr));gap:13px;column-gap:13px}
+.card{border:1px solid var(--rule);border-radius:12px;padding:17px 18px;background:rgba(255,255,255,.016);
+  box-shadow:0 16px 44px -26px rgba(0,0,0,.85);cursor:pointer}
+.card .cn{font-size:17.5px;font-weight:700;color:#f3ece1;display:flex;align-items:center;gap:9px;flex-wrap:wrap;line-height:1.5}
+.card .ct{font-size:15px;color:#cdc3b6;margin-top:7px;line-height:1.75}
+.card .verdict{font-size:15px;line-height:1.9;color:#cdc3b6;border-top:1px solid var(--rule-2)}
+.tag{border-radius:999px;padding:3px 10px;font-size:12px;font-weight:600}
+.tag.win{color:#a8e0a8;border:1px solid rgba(159,214,160,.5);background:rgba(159,214,160,.12)}
+.tag.bite{color:#f5a08e;border:1px solid rgba(240,131,111,.5);background:rgba(240,131,111,.12)}
+.tag.edge{color:#edc47c;border:1px solid rgba(232,180,90,.5);background:rgba(232,180,90,.12)}
+.tl li{border:1px solid var(--rule);border-radius:12px;margin-bottom:10px;background:rgba(255,255,255,.016);
+  box-shadow:0 16px 44px -28px rgba(0,0,0,.8);padding:14px 16px 14px 28px}
+.tl .node{padding:0}
+.tl .yr{font-family:var(--serif);font-size:15px;letter-spacing:.02em}
+.tl .ttl{font-size:16.5px;color:#f3ece1;font-weight:650;line-height:1.55}
+.tl .body{font-size:15px;line-height:1.9;color:#cdc3b6;margin-top:9px}
+.fig{border:1px solid var(--rule);border-radius:13px;background:rgba(255,255,255,.012);
+  box-shadow:0 20px 56px -30px rgba(0,0,0,.9);padding:14px}
+.figcap{font-size:13.5px;line-height:1.85;color:#a1968a}
+.qlegend{font-size:13.5px;color:#cdc3b6}
+.faces{display:grid;grid-template-columns:repeat(auto-fit,minmax(252px,1fr));gap:14px}
+.face{padding:16px;border:1px solid var(--rule);border-radius:13px;background:rgba(255,255,255,.016);
+  box-shadow:0 18px 48px -28px rgba(0,0,0,.85)}
+.fn{font-family:var(--serif);font-size:19px;color:#f3ece1}
+.fd{color:#e8b45a;font-size:13.5px}
+.fc{font-size:14.5px;line-height:1.9;color:#cdc3b6}
+.pair .la{font-size:clamp(15px,1.9vw,18px);color:#f1e9dd}
+.pair .zh{color:#a1968a;font-size:14px}
+.entity{font-size:15.5px;line-height:1.65}
+.entity.cut .txt{color:#8d8378}
+.outcome{font-size:15.5px;line-height:1.9;border-radius:12px;padding:15px 17px;
+  border:1px solid var(--rule);background:rgba(255,255,255,.02)}
+.outcome .badge{color:#e8b45a;font-weight:700}
+.sec-note,.sec-kicker{color:#a1968a}
+</style>
 </head>
 <body>
+<div id="prog" aria-hidden="true"></div>
 
 <!-- ================= 共享 SVG 图形库 ================= -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
@@ -281,7 +425,7 @@
         <path d="M62 212 C 58 152, 64 96, 100 76 C 136 96, 142 152, 138 212"/>
         <path d="M75 174 C 71 132, 79 102, 100 88 C 121 102, 129 132, 125 174"/>
         <path d="M112 92 C 134 112, 140 158, 137 210 L 118 210 C 124 158, 120 118, 106 100 Z" fill="url(#hatch)" stroke="none"/>
-        <ellipse cx="100" cy="140" rx="26" ry="33" fill="#f1f1ef"/>
+        <ellipse cx="100" cy="140" rx="26" ry="33" fill="#141110"/>
         <path d="M86 114 q14 -9 28 0"/>
         <path d="M85 134 q6 -5 12 0"/>
         <path d="M103 134 q6 -5 12 0"/>
@@ -304,7 +448,7 @@
           <circle cx="136" cy="168" r="13"/><circle cx="130" cy="192" r="13"/>
         </g>
         <path d="M116 92 C 138 112, 146 158, 143 200 L 124 204 C 132 158, 128 116, 112 98 Z" fill="url(#hatch)" stroke="none"/>
-        <ellipse cx="100" cy="136" rx="25" ry="33" fill="#f1f1ef"/>
+        <ellipse cx="100" cy="136" rx="25" ry="33" fill="#141110"/>
         <path d="M100 84 v10"/>
         <path d="M86 130 q6 -5 12 0"/>
         <path d="M102 130 q6 -5 12 0"/>
@@ -329,7 +473,7 @@
           <path d="M138 164 q6 12 2 24"/>
         </g>
         <path d="M120 86 C 146 104, 154 152, 143 196 L 126 198 C 136 152, 132 108, 114 92 Z" fill="url(#hatch)" stroke="none"/>
-        <ellipse cx="100" cy="142" rx="27" ry="31" fill="#f1f1ef"/>
+        <ellipse cx="100" cy="142" rx="27" ry="31" fill="#141110"/>
         <path d="M86 134 q6 -5 12 0"/>
         <path d="M102 134 q6 -5 12 0"/>
         <path d="M100 137 v10 q0 4 -4 5"/>
@@ -348,8 +492,10 @@
     <a class="brand" href="#top">剃刀的边缘</a>
     <nav class="nav-links" aria-label="板块导航">
       <a href="#razor" data-nav="razor">剃刀</a>
+      <a href="#origin" data-nav="origin">归属</a>
       <a href="#timeline" data-nav="timeline">思想史</a>
       <a href="#battles" data-nav="battles">判决</a>
+      <a href="#counter" data-nav="counter">反方</a>
       <a href="#faces" data-nav="faces">面孔</a>
       <a href="#quotes" data-nav="quotes">原话</a>
     </nav>
@@ -365,20 +511,26 @@
       <div>
         <p class="kicker">1287 · 奥卡姆的威廉 → 1905 · 爱因斯坦</p>
         <h1>剃刀的边缘</h1>
-        <p class="sub">奥卡姆剃刀与爱因斯坦</p>
+        <p class="sub">奥卡姆剃刀，与它被误挂的三百年 —— 五个世纪里，它判对过，也判错过</p>
       </div>
       <svg class="blade-mark" viewBox="0 0 330 230" fill="none" aria-hidden="true">
-        <line x1="8" y1="118" x2="322" y2="118" stroke="#c9c9c3" stroke-width=".7" stroke-dasharray="2 6"/>
-        <rect x="96" y="72" width="176" height="46" fill="none" stroke="#9a1f1a" stroke-width="1.5"/>
-        <line x1="96" y1="118" x2="272" y2="118" stroke="#9a1f1a" stroke-width="2.6"/>
-        <circle cx="80" cy="95" r="15" fill="none" stroke="#17181a" stroke-width="1"/>
-        <circle cx="80" cy="95" r="5" fill="none" stroke="#17181a" stroke-width="1"/>
-        <path d="M272 118 l14 -11 v22 z" fill="none" stroke="#17181a" stroke-width="1"/>
-        <text x="96" y="164" font-family="Georgia,serif" font-style="italic" font-size="14" fill="#6c6e6f">pluralitas sine necessitate</text>
-        <text x="8" y="206" font-family="Georgia,serif" font-size="11" letter-spacing="3" fill="#6c6e6f">1287 — 1955</text>
+        <line x1="8" y1="118" x2="322" y2="118" stroke="#4c433c" stroke-width=".7" stroke-dasharray="2 6"/>
+        <rect x="96" y="72" width="176" height="46" fill="none" stroke="#e0503c" stroke-width="1.5"/>
+        <line x1="96" y1="118" x2="272" y2="118" stroke="#e0503c" stroke-width="2.6"/>
+        <circle cx="80" cy="95" r="15" fill="none" stroke="#ece5da" stroke-width="1"/>
+        <circle cx="80" cy="95" r="5" fill="none" stroke="#ece5da" stroke-width="1"/>
+        <path d="M272 118 l14 -11 v22 z" fill="none" stroke="#ece5da" stroke-width="1"/>
+        <text x="96" y="164" font-family="Georgia,serif" font-style="italic" font-size="14" fill="#a1968a">pluralitas sine necessitate</text>
+        <text x="8" y="206" font-family="Georgia,serif" font-size="11" letter-spacing="3" fill="#a1968a">1287 — 1955</text>
       </svg>
     </div>
 
+    <div class="hero-stats">
+      <div class="hs"><b>1639</b><span>「如无必要，勿增实体」成形于 John Punch 的注释 —— 不是奥卡姆</span></div>
+      <div class="hs"><b>1649</b><span>「奥卡姆剃刀」这个名字才被造出来（Froidmont）</span></div>
+      <div class="hs"><b>1918</b><span>Thorburn《The Myth of Occam's Razor》开始祛魅</span></div>
+      <div class="hs"><b>51 / 23</b><span>大陆漂移被压 51 年 · 细菌致溃疡被压 23 年</span></div>
+    </div>
     <div class="hrule"></div>
 
     <div class="pair">
@@ -406,42 +558,42 @@
     <figure class="fig" data-anim>
       <svg viewBox="0 0 680 220" aria-hidden="true">
         <!-- 剃前的六条 -->
-        <g fill="none" stroke="#17181a" stroke-width="1.2">
+        <g fill="none" stroke="#ece5da" stroke-width="1.2">
           <rect x="60" y="10" width="240" height="20"/>
           <rect x="60" y="40" width="240" height="20"/>
         </g>
-        <g fill="none" stroke="#6c6e6f" stroke-width="1">
-          <rect x="60" y="70" width="240" height="20" fill="url(#hatch)" stroke="#17181a" stroke-width="1"/>
-          <rect x="60" y="100" width="240" height="20" fill="url(#hatch)" stroke="#6c6e6f" stroke-width="1"/>
-          <rect x="60" y="130" width="240" height="20" fill="url(#hatch)" stroke="#6c6e6f" stroke-width="1"/>
-          <rect x="60" y="160" width="240" height="20" fill="url(#hatch)" stroke="#6c6e6f" stroke-width="1"/>
+        <g fill="none" stroke="#a1968a" stroke-width="1">
+          <rect x="60" y="70" width="240" height="20" fill="url(#hatch)" stroke="#ece5da" stroke-width="1"/>
+          <rect x="60" y="100" width="240" height="20" fill="url(#hatch)" stroke="#a1968a" stroke-width="1"/>
+          <rect x="60" y="130" width="240" height="20" fill="url(#hatch)" stroke="#a1968a" stroke-width="1"/>
+          <rect x="60" y="160" width="240" height="20" fill="url(#hatch)" stroke="#a1968a" stroke-width="1"/>
         </g>
         <!-- 朱笔划掉下面四条 -->
-        <g stroke="#9a1f1a" stroke-width="1">
+        <g stroke="#e0503c" stroke-width="1">
           <line x1="54" y1="80" x2="306" y2="80"/>
           <line x1="54" y1="110" x2="306" y2="110"/>
           <line x1="54" y1="140" x2="306" y2="140"/>
           <line x1="54" y1="170" x2="306" y2="170"/>
         </g>
         <!-- 刀口（正好嵌在第二、三条之间） -->
-        <g fill="none" stroke="#17181a" stroke-width="1.2">
+        <g fill="none" stroke="#ece5da" stroke-width="1.2">
           <path d="M14 60 L360 60 L360 70 L14 70 Z" fill="url(#hatch)"/>
           <circle cx="8" cy="65" r="8"/>
         </g>
-        <line x1="14" y1="70" x2="360" y2="70" stroke="#9a1f1a" stroke-width="2.4"/>
-        <text x="312" y="52" font-size="11" letter-spacing="3" fill="#9a1f1a">刀口</text>
+        <line x1="14" y1="70" x2="360" y2="70" stroke="#e0503c" stroke-width="2.4"/>
+        <text x="312" y="52" font-size="11" letter-spacing="3" fill="#e0503c">刀口</text>
         <!-- 箭头（对准右侧两条的中线） -->
-        <path d="M382 67 L416 67" stroke="#6c6e6f" stroke-width=".9" stroke-dasharray="3 4" fill="none"/>
-        <path d="M416 63 l8 4 l-8 4 z" fill="#6c6e6f"/>
+        <path d="M382 67 L416 67" stroke="#a1968a" stroke-width=".9" stroke-dasharray="3 4" fill="none"/>
+        <path d="M416 63 l8 4 l-8 4 z" fill="#a1968a"/>
         <!-- 剃后 -->
-        <g fill="none" stroke="#17181a" stroke-width="1.4">
+        <g fill="none" stroke="#ece5da" stroke-width="1.4">
           <rect x="440" y="40" width="220" height="20"/>
           <rect x="440" y="76" width="220" height="20"/>
         </g>
-        <line x1="440" y1="50" x2="660" y2="50" stroke="#9a1f1a" stroke-width="3" opacity=".18"/>
-        <line x1="440" y1="86" x2="660" y2="86" stroke="#9a1f1a" stroke-width="3" opacity=".18"/>
-        <text x="60" y="208" font-size="11" letter-spacing="1" fill="#6c6e6f">剃前 · 6 条独立假设</text>
-        <text x="440" y="208" font-size="11" letter-spacing="1" fill="#6c6e6f">剃后 · 2 条（解释力不变）</text>
+        <line x1="440" y1="50" x2="660" y2="50" stroke="#e0503c" stroke-width="3" opacity=".18"/>
+        <line x1="440" y1="86" x2="660" y2="86" stroke="#e0503c" stroke-width="3" opacity=".18"/>
+        <text x="60" y="208" font-size="11" letter-spacing="1" fill="#a1968a">剃前 · 6 条独立假设</text>
+        <text x="440" y="208" font-size="11" letter-spacing="1" fill="#a1968a">剃后 · 2 条（解释力不变）</text>
       </svg>
       <figcaption class="figcap">剃刀剖面：横着切过去，划掉的是「解释力相同时可以不要的那些」。上面两条留下来，不是因为它们更对，是因为删掉它们解释力会掉。</figcaption>
     </figure>
@@ -474,6 +626,67 @@
     <div id="outcome-area" aria-live="polite"></div>
   </section>
 
+
+  <!-- ================= I.5 归属（档2 新增） ================= -->
+  <section class="sec" id="origin">
+    <p class="sec-kicker">I·5 · 归属</p>
+    <h2>这句话，他一个字没说过</h2>
+    <p class="sec-note">标题上那八个字，挂在奥卡姆名下三百多年 —— 但它不在他任何一部存世著作里。</p>
+
+    <div class="turn">
+      <p class="turn-l"><span class="turn-k">反转</span>「如无必要，勿增实体」第一次成形，是 <b>1639 年</b>：爱尔兰方济各会士 <b>John Punch</b> 在给邓斯·司各脱作注时写下它，并称其为经院哲学的「通行公理」（<i>axioma vulgare</i>）。而「奥卡姆剃刀」这个<b>名字</b>还要更晚 —— <b>1649 年</b>，<b>Libert Froidmont</b> 造出 <i>novacula occami</i>，他谈论的对象其实是奥卡姆的批评者 Gregory of Rimini，不是奥卡姆本人。</p>
+    </div>
+
+    <div class="mini-tl">
+      <div class="mtl-row"><span class="mtl-y">约 1320 年代</span><span class="mtl-t">奥卡姆写下他自己那两句</span><span class="mtl-g ok">他的原话</span></div>
+      <div class="mtl-row"><span class="mtl-y">1639</span><span class="mtl-t">John Punch 在司各脱注释里写成「如无必要，勿增实体」</span><span class="mtl-g no">不是他说的</span></div>
+      <div class="mtl-row"><span class="mtl-y">1649</span><span class="mtl-t">Libert Froidmont 造出「奥卡姆剃刀」这个名字</span><span class="mtl-g no">名字也不是他起的</span></div>
+      <div class="mtl-row"><span class="mtl-y">1918</span><span class="mtl-t">W. M. Thorburn 发表《The Myth of Occam's Razor》（<i>Mind</i> 27(107), 345–353）</span><span class="mtl-g mid">学界开始祛魅</span></div>
+    </div>
+
+    <div class="lat-block">
+      <p class="lat-h">他自己写的，是这两句</p>
+      <div class="lat-item">
+        <p class="lat-x">Numquam ponenda est pluralitas sine necessitate.</p>
+        <p class="lat-z">若无必要，不可设定多样性。<span class="lat-s">《箴言四书问题集》I, d.27, q.2, K</span></p>
+      </div>
+      <div class="lat-item">
+        <p class="lat-x">Frustra fit per plura quod potest fieri per pauciora.</p>
+        <p class="lat-z">用多能做到的事，用少就能做，便是徒劳。<span class="lat-s">《逻辑大全》i.12</span></p>
+      </div>
+      <p class="lat-n">他也不是第一个说这话的人：司各脱《牛津评注》里已有 <i>Pluralitas non est ponenda sine necessitate</i>；亚里士多德《后分析篇》、托勒密、阿奎那都有近似表述；康德把它当作纯粹理性的调节性理念（《纯粹理性批判》B538-9）。<b>剃刀不是他发明的，是后来以他命名的。</b></p>
+    </div>
+
+    <div class="irony">
+      <p class="irony-h">最反鸡汤的一点</p>
+      <p>大众叙事里，剃刀的意思是「更简单的更可能为真」。可奥卡姆本人砍掉「共相」这类实体，靠的<b>不是简洁度，是逻辑不融贯</b> —— 他认定当时实在论的共相理论自相矛盾（SEP §4.2：<i>he holds that realist theories of universals are outright incoherent</i>）。<b>传说的用法，比他自己用得更猛。</b></p>
+    </div>
+
+    <h3 class="sub-h">剃刀真正长什么样：三层与一条例外</h3>
+    <div class="layers">
+      <div class="layer">
+        <p class="ly-n">第一层</p>
+        <p class="ly-t">本体论经济</p>
+        <p class="ly-d">别为了解释而多设<b>实体种类</b>。他由这一条把亚里士多德的十范畴砍到两个：<b>实体</b>与<b>质</b>（SEP §4.3：<i>there are only two ontological categories of beings</i>）。注意：语义上他仍承认十个范畴，砍的只是本体承诺。</p>
+      </div>
+      <div class="layer">
+        <p class="ly-n">第二层</p>
+        <p class="ly-t">方法论克制</p>
+        <p class="ly-d">它是<b>告诫</b>，不是判决。它只说：两条竞争主张之间，别选那个要多设实体存在的 —— <b>除非</b>满足下面的条件。它给「少设实体」加分，不负责给结论盖章。</p>
+      </div>
+      <div class="layer">
+        <p class="ly-n">第三层</p>
+        <p class="ly-t">条件条款</p>
+        <p class="ly-d">奥卡姆<b>最完整</b>的版本是带条件的：须有<b>理由</b>、或来自<b>自明之理</b>的推演、或<b>经验</b>、或<b>权威</b>（SEP §4.1）。大众版本把这一整句删掉了 —— 于是「更简单」被当成免检理由。</p>
+      </div>
+      <div class="layer warn">
+        <p class="ly-n">例外</p>
+        <p class="ly-t">他自己也会破例</p>
+        <p class="ly-d">涉及奇迹与神的大能时，他限制剃刀的适用范围（如圣体中的多重奇迹）。<b>一个连提出者都不当万能药的原则，被后世当成了万能药。</b></p>
+      </div>
+    </div>
+  </section>
+
   <!-- ================= II 思想史 ================= -->
   <section class="sec" id="timeline">
     <p class="sec-kicker">II · 思想史</p>
@@ -482,8 +695,8 @@
 
     <figure class="fig" data-anim>
       <svg viewBox="0 0 680 110" aria-hidden="true">
-        <line class="draw-line" x1="40" y1="64" x2="640" y2="64" stroke="#17181a" stroke-width="1.1"/>
-        <g stroke="#17181a" stroke-width="1" class="fade" style="transition-delay:.5s">
+        <line class="draw-line" x1="40" y1="64" x2="640" y2="64" stroke="#ece5da" stroke-width="1.1"/>
+        <g stroke="#ece5da" stroke-width="1" class="fade" style="transition-delay:.5s">
           <line x1="40" y1="58" x2="40" y2="70"/>
           <line x1="140" y1="58" x2="140" y2="70"/>
           <line x1="240" y1="58" x2="240" y2="70"/>
@@ -492,8 +705,8 @@
           <line x1="540" y1="58" x2="540" y2="70"/>
         </g>
         <g class="fade" style="transition-delay:.7s">
-          <circle cx="640" cy="64" r="4" fill="#9a1f1a"/>
-          <g font-size="10" fill="#6c6e6f" text-anchor="middle">
+          <circle cx="640" cy="64" r="4" fill="#e0503c"/>
+          <g font-size="10" fill="#a1968a" text-anchor="middle">
             <text x="40" y="48">1287</text>
             <text x="140" y="48">1687</text>
             <text x="240" y="48">1905</text>
@@ -501,7 +714,7 @@
             <text x="440" y="48">1925–35</text>
             <text x="540" y="48">1955</text>
           </g>
-          <text x="640" y="48" font-size="10" fill="#9a1f1a" text-anchor="middle">今天</text>
+          <text x="640" y="48" font-size="10" fill="#e0503c" text-anchor="middle">今天</text>
         </g>
       </svg>
       <figcaption class="figcap">时间尺：七个刻度，跨六百六十八年。剃刀不是某一个时代的方法，是被反复捡起来的那一把。</figcaption>
@@ -514,34 +727,34 @@
   <section class="sec" id="battles">
     <p class="sec-kicker">III · 判决</p>
     <h2>四大战役</h2>
-    <p class="sec-note">剃刀三次得手，一次停住。点开卡片看判决。</p>
+    <p class="sec-note">七次判决：两次干净得手，两次碰线，两次翻车，一次仍在打。点开卡片看判决。</p>
 
     <figure class="fig" data-anim>
       <svg viewBox="0 0 680 430" aria-hidden="true">
         <!-- 坐标 -->
-        <g stroke="#17181a" stroke-width="1" fill="none">
+        <g stroke="#ece5da" stroke-width="1" fill="none">
           <line x1="90" y1="370" x2="650" y2="370"/>
           <line x1="90" y1="370" x2="90" y2="50"/>
-          <path d="M640 366 l10 4 l-10 4 z" fill="#17181a" stroke="none"/>
-          <path d="M86 60 l4 -10 l4 10 z" fill="#17181a" stroke="none"/>
+          <path d="M640 366 l10 4 l-10 4 z" fill="#ece5da" stroke="none"/>
+          <path d="M86 60 l4 -10 l4 10 z" fill="#ece5da" stroke="none"/>
         </g>
-        <g stroke="#dededa" stroke-width="1" stroke-dasharray="4 5">
+        <g stroke="#3b332e" stroke-width="1" stroke-dasharray="4 5">
           <line x1="370" y1="50" x2="370" y2="370"/>
           <line x1="90" y1="210" x2="650" y2="210"/>
         </g>
-        <g font-size="10.5" letter-spacing="2" fill="#6c6e6f">
+        <g font-size="10.5" letter-spacing="2" fill="#a1968a">
           <text x="110" y="72">反噬</text>
           <text x="630" y="358" text-anchor="end">触边</text>
           <text x="640" y="396" text-anchor="end" letter-spacing="1">剃刀的进展 →</text>
           <text x="90" y="38" letter-spacing="1">解释力保住 ↑</text>
         </g>
-        <text x="632" y="72" text-anchor="end" font-size="10.5" letter-spacing="2" fill="#9a1f1a">胜</text>
+        <text x="632" y="72" text-anchor="end" font-size="10.5" letter-spacing="2" fill="#e0503c">胜</text>
 
         <!-- 四个点 -->
-        <g class="fade"><circle cx="527" cy="108" r="5" fill="#9a1f1a"/><text x="539" y="104" font-family="Georgia,serif" font-size="12" fill="#9a1f1a">①</text></g>
-        <g class="fade" style="transition-delay:.18s"><circle cx="594" cy="88" r="5" fill="#9a1f1a"/><text x="606" y="84" font-family="Georgia,serif" font-size="12" fill="#9a1f1a">②</text></g>
-        <g class="fade" style="transition-delay:.36s"><circle cx="398" cy="300" r="5" fill="#9a1f1a"/><text x="410" y="296" font-family="Georgia,serif" font-size="12" fill="#9a1f1a">③</text></g>
-        <g class="fade" style="transition-delay:.54s"><circle cx="191" cy="140" r="5" fill="#9a1f1a"/><text x="203" y="136" font-family="Georgia,serif" font-size="12" fill="#9a1f1a">④</text></g>
+        <g class="fade"><circle cx="527" cy="108" r="5" fill="#e0503c"/><text x="539" y="104" font-family="Georgia,serif" font-size="12" fill="#e0503c">①</text></g>
+        <g class="fade" style="transition-delay:.18s"><circle cx="594" cy="88" r="5" fill="#e0503c"/><text x="606" y="84" font-family="Georgia,serif" font-size="12" fill="#e0503c">②</text></g>
+        <g class="fade" style="transition-delay:.36s"><circle cx="398" cy="300" r="5" fill="#e0503c"/><text x="410" y="296" font-family="Georgia,serif" font-size="12" fill="#e0503c">③</text></g>
+        <g class="fade" style="transition-delay:.54s"><circle cx="191" cy="140" r="5" fill="#e0503c"/><text x="203" y="136" font-family="Georgia,serif" font-size="12" fill="#e0503c">④</text></g>
       </svg>
       <figcaption class="figcap">判决图：越往右上，剃刀越是既砍得动、又没丢掉解释力。右下是砍早了，左上是砍不动：想要更简单，代价是更奇怪的假设。</figcaption>
       <ul class="qlegend">
@@ -549,10 +762,54 @@
         <li><span class="mk">②</span>广义相对论<span class="tag">胜</span></li>
         <li><span class="mk">③</span>统一场论<span class="tag edge">触边</span></li>
         <li><span class="mk">④</span>量子力学<span class="tag bite">反噬</span></li>
+        <li><span class="mk">⑤</span>大陆漂移（1912→1963）<span class="tag bite">翻车</span></li>
+        <li><span class="mk">⑥</span>细菌致溃疡（1982→2005）<span class="tag bite">翻车</span></li>
+        <li><span class="mk">⑦</span>暗物质 vs 修改引力<span class="tag edge">悬</span></li>
       </ul>
     </figure>
 
     <div class="cards" id="cards"></div>
+  </section>
+
+
+  <!-- ================= IV.5 反方（档2 新增） ================= -->
+  <section class="sec" id="counter">
+    <p class="sec-kicker">IV·5 · 反方</p>
+    <h2>剃刀什么时候会骗人</h2>
+    <p class="sec-note">这一节是这页存在的理由：网上讲奥卡姆剃刀的地方，几乎都不讲它翻过车。</p>
+
+    <div class="ctrs">
+      <div class="ctr">
+        <p class="ctr-n">反方 一</p>
+        <p class="ctr-h">它不是真理生成器，是启发式</p>
+        <p class="ctr-d">在哲学里用剃刀对付形而上学理论，斯坦福哲学百科的原话是：目的<b>「更像是转移举证责任，而不是直接驳倒不够简洁的理论」</b>（SEP "Simplicity"）。它是让对方先说话的工具，不是判决书。</p>
+      </div>
+      <div class="ctr">
+        <p class="ctr-n">反方 二</p>
+        <p class="ctr-h">「简洁」没有唯一定义</p>
+        <p class="ctr-d">SEP 明确区分两类：<b>句法简洁</b>（elegance，公理更少、形式更雅）与<b>本体简洁</b>（parsimony，假设的实体种类更少）。<b>两者可以指向相反的方向</b> —— 一个理论可以公式更漂亮而实体更多。</p>
+      </div>
+      <div class="ctr">
+        <p class="ctr-n">反方 三</p>
+        <p class="ctr-h">它会剃掉真东西</p>
+        <p class="ctr-d">不是理论上的担忧，是两次实证：大陆漂移（1912 → 1963，被拒 51 年）与细菌致溃疡（1982 → 2005，被压 23 年）。两次都是「多的那一边」对 —— 见上节判决。</p>
+      </div>
+      <div class="ctr">
+        <p class="ctr-n">反方 四</p>
+        <p class="ctr-h">它常被当论战修辞用</p>
+        <p class="ctr-d">「谁的假设更少」取决于怎么数假设。同一场争论里，双方都能贴「更简洁」的标签 —— 于是剃刀从方法退化成口号，谁喊得响谁占便宜。</p>
+      </div>
+      <div class="ctr">
+        <p class="ctr-n">反方 五</p>
+        <p class="ctr-h">它自带条件，却被无条件引用</p>
+        <p class="ctr-d">奥卡姆的完整版本要求「理由／自明之理／经验／权威」之一（见 归属 一节）。今天被引用时，这一句没了 —— 于是「更简单」从<b>有条件的加分项</b>变成<b>免检的断定</b>。</p>
+      </div>
+      <div class="ctr">
+        <p class="ctr-n">反方 六</p>
+        <p class="ctr-h">「简洁是理论美德」这件事本身有争议</p>
+        <p class="ctr-d">为什么更简洁的理论更可能为真？先验辩护、自然主义辩护、概率／统计辩护，三种思路各有各的麻烦（SEP "Simplicity" 分三章讨论）。<b>把简洁当公理用的人，通常没意识到它是个待论证的立场。</b></p>
+      </div>
+    </div>
   </section>
 
   <!-- ================= IV 面孔 ================= -->
@@ -606,6 +863,23 @@
   </section>
 
   <footer>剃刀的边缘 · 原版 2026-05-23，重建于 2026-09-13 · 单文件，无外部依赖</footer>
+
+  <!-- ================= 来源与分级（档2 新增） ================= -->
+  <section class="sec" id="sources">
+    <p class="sec-kicker">附 · 来源</p>
+    <h2>这些话说给谁听</h2>
+    <p class="sec-note">本页新增内容全部按来源分级写：<b>G</b> = 一手／权威源直接读到；<b>Y</b> = 可查但未双重核实（可提及，不作承重柱）。核不到的说法一律不写进正文。</p>
+    <div class="srcs">
+      <div class="src"><span class="sg g">G</span><span class="st">Stanford Encyclopedia of Philosophy · “William of Ockham”</span><span class="su">A 节（其人）· B 节（归属史）· C 节（三层与条件条款）</span></div>
+      <div class="src"><span class="sg g">G</span><span class="st">Stanford Encyclopedia of Philosophy · “Simplicity”</span><span class="su">反方一、二、六（句法简洁 vs 本体简洁；转移举证责任）</span></div>
+      <div class="src"><span class="sg g">G</span><span class="st">Nobel Prize 官方新闻稿（2005 生理学或医学奖）</span><span class="su">判决六：官方措辞与「90% / 80%」数字</span></div>
+      <div class="src"><span class="sg y">Y</span><span class="st">Wikipedia · “Occam's razor”（其引 Thorburn 1918, <i>Mind</i> 27(107)）</span><span class="su">归属史：Punch 1639 / Froidmont 1649 / 奥卡姆原句出处</span></div>
+      <div class="src"><span class="sg y">Y</span><span class="st">Wikipedia · “Continental drift” / “Copernican heliocentrism”</span><span class="su">判决五（大陆漂移 51 年）· 日心说保留本轮一说</span></div>
+      <div class="src"><span class="sg y">Y</span><span class="st">Wikipedia · “Modified Newtonian dynamics” ＋ NASA Science 暗物质页</span><span class="su">判决七（暗物质 vs MOND 悬案）</span></div>
+    </div>
+    <p class="src-note">未采用的条目：常见归给爱因斯坦的「Everything should be made as simple as possible, but not simpler.」—— 确切出处存疑，按纪律<b>不进正文</b>。同理，海王星（1846）常被算作剃刀战功，但那更像「预测力」的胜利，本页不算它的功。</p>
+  </section>
+
 </main>
 
 <!-- ================= 桌面粘性目录 ================= -->
@@ -665,7 +939,13 @@
     { t:"统一场论", v:"触边", k:"edge", s:"三十年未竟。砍的不是多余的，是当时还不存在的。",
       d:"强相互作用、弱相互作用尚未被发现，真正需要统一的力不止两个。数据不够时提前剃，剃掉的是还不知道的东西。" },
     { t:"量子力学", v:"反噬", k:"bite", s:"想要更简单的版本，得到的却是更奇怪的假设。",
-      d:"贝尔不等式证明：隐变量若存在，必须是非局域的。爱因斯坦期望的「更简单」，代价是比量子力学本身更违背直觉。" }
+      d:"贝尔不等式证明：隐变量若存在，必须是非局域的。爱因斯坦期望的「更简单」，代价是比量子力学本身更违背直觉。" },
+    { t:"大陆漂移", v:"翻车", k:"bite", s:"1912 → 1963，被拒 51 年。剃刀站在了错的那一边。",
+      d:"韦格纳提出大陆会动，被拒的主要理由是「不知道有什么地质机制能推动如此巨大的运动」。当时更省事的解释是大陆不动 + 已沉没的陆桥。直到海底磁条带（Vine–Matthews–Morley，1963）给出机制，漂移才被接受 —— 多出来的那个机制才是对的。" },
+    { t:"细菌致溃疡", v:"翻车", k:"bite", s:"1982 → 2005，被压 23 年。代价最惨的一次。",
+      d:"诺贝尔奖官方新闻稿写明：1982 年 Marshall 与 Warren 发现幽门螺杆菌时，「压力与生活方式被认为是主要原因」。今天该菌导致 90% 以上的十二指肠溃疡、80% 以下的胃溃疡。「压力溃疡」不需要新实体，「细菌溃疡」要多设一个实体加一条因果链 —— 多设的那个是对的。" },
+    { t:"暗物质 vs 修改引力", v:"悬", k:"edge", s:"今天仍在打。剃刀指向一边，证据指向另一边。",
+      d:"MOND（修改牛顿动力学）的动机就是「不引入暗物质」解释星系旋转曲线 —— 剃刀的逻辑指向它；但星系团、宇宙微波背景等观测目前更有力地支持暗物质。这一条证明剃刀不是判决器，是权重器：它给少设实体加分，但证据强烈偏向「多的那一边」时，加分不足以翻盘。" }
   ];
 
   var scene = "sr", cut = false;
@@ -818,5 +1098,53 @@
   onScroll();
 })();
 </script>
+
+<script>
+/* ===== 档2 增量脚本：进度条 + 滚动揭示 ===== */
+(function () {
+  var bar = document.getElementById('prog');
+  function onScroll() {
+    if (!bar) return;
+    var h = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (h > 0 ? Math.min(100, Math.max(0, window.scrollY / h * 100)) : 0) + '%';
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  var targets = document.querySelectorAll('.sec > *');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reduce && 'IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('rv-in'); io.unobserve(e.target); }
+      });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.06 });
+    Array.prototype.forEach.call(targets, function (el, i) {
+      if (el.classList.contains('sec-kicker')) return;
+      el.classList.add('rv');
+      el.style.transitionDelay = Math.min(i * 45, 240) + 'ms';
+      io.observe(el);
+    });
+    /* 兜底（P0）：快速滚动 / 锚点跳转会整段跳过矮元素 → 元素永远不显现 = 内容不可见。
+       每次滚动把已进入视口线的剩余元素直接点亮。 */
+    var ticking = false;
+    function sweep() {
+      ticking = false;
+      var rest = document.querySelectorAll('.rv:not(.rv-in)');
+      if (!rest.length) { window.removeEventListener('scroll', onScroll2); return; }
+      var line = window.innerHeight * 0.95;
+      Array.prototype.forEach.call(rest, function (el) {
+        if (el.getBoundingClientRect().top < line) { el.classList.add('rv-in'); io.unobserve(el); }
+      });
+    }
+    function onScroll2() { if (!ticking) { ticking = true; requestAnimationFrame(sweep); } }
+    window.addEventListener('scroll', onScroll2, { passive: true });
+    window.addEventListener('resize', onScroll2);
+    window.addEventListener('hashchange', onScroll2);
+    sweep();
+  }
+})();
+</script>
+
 </body>
 </html>
